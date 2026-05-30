@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pameran Seni Digital | Ngawiti 2 | Disporabudpar</title>
+    <title>Ngawiti 2 | Beranda</title>
     <meta name="description" content="E-Katalog Pameran Seni Ngawiti 2 - Disporabudpar - 5-9 Juni 2026">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -242,7 +242,7 @@
 
         .card-thumb {
             aspect-ratio: 3/4;
-            background: #D4B896;
+            background: #000;
             position: relative;
             display: flex;
             align-items: center;
@@ -265,6 +265,33 @@
             object-fit: cover;
             opacity: 0;
             transition: opacity 0.4s ease;
+        }
+
+        .card-info {
+            display: block;
+            padding: 14px 12px 16px;
+            background: #EDE0C0;
+        }
+
+        .card-info .card-title,
+        .card-info .card-artist {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .card-info .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+
+        .card-info .card-artist {
+            font-size: 12px;
+            color: #8B1A1A;
+            font-weight: 600;
         }
 
         .card-thumb img.loaded { opacity: 1; }
@@ -301,23 +328,26 @@
             z-index: 2;
         }
 
-        .card-info {
-            padding: 10px 12px 12px;
-            border-top: 1.5px solid #C9AA6E;
+        .card-thumb-icon {
+            font-size: 40px;
+            opacity: 0.55;
+            z-index: 1;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .card-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: #1a1a1a;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 3px;
+            margin-bottom: 5px;
         }
 
         .card-artist {
-            font-size: 11px;
+            font-size: 12px;
             color: #8B1A1A;
             font-weight: 600;
             white-space: nowrap;
@@ -669,14 +699,11 @@
                 <img alt="Sampul ${escHtml(k.title)}" loading="lazy">
                 <span class="card-badge">${escHtml(type)}</span>
                 ${k.featured ? '<span class="card-featured">&#9733; Pilihan</span>' : ''}
-            </div>
+            </div>`;
+        a.innerHTML += `
             <div class="card-info">
                 <div class="card-title" title="${escHtml(k.title)}">${escHtml(k.title)}</div>
                 <div class="card-artist">${escHtml(k.artist)}</div>
-                <div class="card-meta">
-                    <span>${escHtml(k.year)}</span>
-                    <span>${escHtml(k.medium || '')}</span>
-                </div>
             </div>`;
         return a;
     }
@@ -689,8 +716,10 @@
                     const pdf      = await pdfjsLib.getDocument(url).promise;
                     const page     = await pdf.getPage(1);
                     const vp       = page.getViewport({ scale: 1 });
-                    const dpr      = 1;
-                    const tw = 280 * dpr, th = 360 * dpr;
+                    const dpr      = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
+                    const cardEl   = imgEl.closest('.card-thumb');
+                    const tw       = Math.round((cardEl?.clientWidth || 280) * dpr);
+                    const th       = Math.round((cardEl?.clientHeight || 360) * dpr);
                     const scale    = Math.max(tw / vp.width, th / vp.height);
                     const rvp      = page.getViewport({ scale });
                     const rc       = document.createElement('canvas');
@@ -699,6 +728,8 @@
                     const cc       = document.createElement('canvas');
                     cc.width = tw; cc.height = th;
                     const cx       = cc.getContext('2d');
+                    cx.imageSmoothingEnabled = true;
+                    cx.imageSmoothingQuality = 'high';
                     cx.drawImage(rc, (tw - rc.width) / 2, (th - rc.height) / 2);
                     return cc.toDataURL('image/jpeg', 0.9);
                 })());
