@@ -622,6 +622,8 @@
         const loadingEl = document.getElementById('loading-state');
         loadingEl?.remove();
 
+        const thumbTasks = [];
+
         if (total === 0) {
             grid.style.display    = 'none';
             emptyEl.style.display = '';
@@ -634,9 +636,19 @@
             card.style.animationDelay = (i * 45) + 'ms';
             grid.appendChild(card);
             if (k.type?.toLowerCase() === 'pdf' && k.file) {
-                renderPdfThumb(card.querySelector('img'), k.file);
+                thumbTasks.push({ img: card.querySelector('img'), file: k.file });
             }
         });
+
+        const scheduleThumbs = () => {
+            thumbTasks.forEach(task => renderPdfThumb(task.img, task.file));
+        };
+
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(scheduleThumbs, { timeout: 200 });
+        } else {
+            setTimeout(scheduleThumbs, 50);
+        }
 
         updatePagination(total, totalPages);
     }
@@ -677,8 +689,8 @@
                     const pdf      = await pdfjsLib.getDocument(url).promise;
                     const page     = await pdf.getPage(1);
                     const vp       = page.getViewport({ scale: 1 });
-                    const dpr      = Math.min(window.devicePixelRatio || 1, 2);
-                    const tw = 360 * dpr, th = 480 * dpr;
+                    const dpr      = 1;
+                    const tw = 280 * dpr, th = 360 * dpr;
                     const scale    = Math.max(tw / vp.width, th / vp.height);
                     const rvp      = page.getViewport({ scale });
                     const rc       = document.createElement('canvas');

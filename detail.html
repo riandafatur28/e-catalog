@@ -51,11 +51,13 @@
             background: #2C1A0E;
             overflow: hidden;
             z-index: 1;
+            touch-action: manipulation;
         }
 
         #flipbook {
             position: relative;
             margin: 0 auto;
+            transition: transform 0.2s ease;
         }
 
         .page {
@@ -236,6 +238,27 @@
             padding: 0 16px;
         }
 
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #zoom-indicator {
+            min-width: 58px;
+            text-align: center;
+            color: #F5EDD8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            background: rgba(44,26,14,0.85);
+            border: 1.5px solid #C9AA6E;
+            border-radius: 999px;
+            padding: 8px 10px;
+            backdrop-filter: blur(4px);
+            font-family: 'Inter', monospace;
+        }
+
         .ctrl-btn {
             background: rgba(44,26,14,0.88);
             border: 1.5px solid #C9AA6E;
@@ -317,6 +340,7 @@
             #flipbook { transform: scale(0.95); }
             #book-title { font-size: 13px; }
             .btn-back { font-size: 12px; padding: 7px 13px; }
+            .bottom-controls { flex-wrap: wrap; gap: 8px; }
         }
     </style>
 </head>
@@ -355,6 +379,11 @@
 <!-- Bottom Navigation Controls -->
 <div class="bottom-controls">
     <button id="btn-prev" class="ctrl-btn" disabled>&#10094;</button>
+    <div class="zoom-controls">
+        <button id="btn-zoom-out" class="ctrl-btn" aria-label="Perkecil">-</button>
+        <span id="zoom-indicator">100%</span>
+        <button id="btn-zoom-in" class="ctrl-btn" aria-label="Perbesar">+</button>
+    </div>
     <span id="page-indicator">1 / -</span>
     <button id="btn-next" class="ctrl-btn">&#10095;</button>
 </div>

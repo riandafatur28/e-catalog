@@ -12,6 +12,10 @@ let pdfDoc      = null;
 let totalPages  = 1;
 let isFlipping  = false;
 let preloadCache = {};
+let currentZoom = 1;
+const ZOOM_MIN = 0.7;
+const ZOOM_MAX = 2.2;
+const ZOOM_STEP = 0.2;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await initFlipbook();
@@ -99,6 +103,9 @@ async function loadAndRenderPDF(pdfUrl) {
             pageDiv.appendChild(canvas);
             document.getElementById('flipbook').appendChild(pageDiv);
 
+            canvas.style.transformOrigin = 'center center';
+            canvas.style.transition = 'transform 0.18s ease';
+
             /* update progress bar & text */
             const pct = Math.round((pageNum / totalPages) * 100);
             const bar = document.getElementById('loader-progress');
@@ -154,6 +161,11 @@ function initTurnFlipbook() {
     document.getElementById('btn-next').onclick = () => {
         if (!isFlipping && $flipbook) $flipbook.turn('next');
     };
+    document.getElementById('btn-zoom-in').onclick = () => changeZoom(ZOOM_STEP);
+    document.getElementById('btn-zoom-out').onclick = () => changeZoom(-ZOOM_STEP);
+
+    const zoomResetBtn = document.getElementById('zoom-indicator');
+    if (zoomResetBtn) zoomResetBtn.onclick = resetZoom;
 
     document.addEventListener('keydown', (e) => {
         if (isFlipping || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -166,6 +178,7 @@ function initTurnFlipbook() {
     /* Touch / swipe */
     let touchStartX = 0, touchStartY = 0;
     const flipbookEl = $flipbook[0];
+    if (!flipbookEl) return;
 
     flipbookEl.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
@@ -179,8 +192,26 @@ function initTurnFlipbook() {
         if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
             e.preventDefault();
             diffX > 0 ? $flipbook.turn('next') : $flipbook.turn('previous');
+        } else if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) {
+            const touchX = e.changedTouches[0].screenX;
+            if (touchX > window.innerWidth * 0.55) {
+                $flipbook.turn('next');
+            } else if (touchX < window.innerWidth * 0.45) {
+                $flipbook.turn('previous');
+            }
         }
     }, { passive: true });
+
+    flipbookEl.addEventListener('click', (e) => {
+        if (isFlipping) return;
+        if (e.target.closest('.ctrl-btn') || e.target.closest('#download-btn') || e.target.closest('.btn-back')) return;
+        const clickX = e.clientX;
+        if (clickX > window.innerWidth * 0.55) {
+            $flipbook.turn('next');
+        } else if (clickX < window.innerWidth * 0.45) {
+            $flipbook.turn('previous');
+        }
+    });
 
     /* Resize */
     let resizeTimeout;
@@ -197,6 +228,7 @@ function initTurnFlipbook() {
     updatePageIndicator(1);
     updateNavButtons(1);
     preloadAdjacentPages(1);
+    applyZoom();
 
     console.log(`Flipbook siap — ${totalPages} halaman, mode single, HD`);
 }
@@ -268,6 +300,31 @@ function showError(message) {
         </button>`;
 
     if (loader) loader.style.display = 'flex';
+}
+
+function applyZoom() {
+    const flipbookEl = document.getElementById('flipbook');
+    if (!flipbookEl) return;
+    flipbookEl.style.transformOrigin = '50% 50%';
+    flipbookEl.style.transform = `scale(${currentZoom})`;
+    updateZoomIndicator();
+}
+
+function updateZoomIndicator() {
+    const zoomLabel = document.getElementById('zoom-indicator');
+    if (zoomLabel) zoomLabel.textContent = `${Math.round(currentZoom * 100)}%`;
+}
+
+function changeZoom(amount) {
+    const nextZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, currentZoom + amount));
+    if (nextZoom === currentZoom) return;
+    currentZoom = nextZoom;
+    applyZoom();
+}
+
+function resetZoom() {
+    currentZoom = 1;
+    applyZoom();
 }
 
 window.flipPrev = () => $flipbook?.turn('previous');
