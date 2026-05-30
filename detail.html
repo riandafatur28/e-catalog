@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Detail Karya - Ngawiti 2</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/blasten/turn.js@latest/turn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #2C1A0E;
+            position: fixed;
+            top: 0; left: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        /* Accent stripe top */
+        .accent-stripe-top {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                #8B1A1A 0px, #8B1A1A 24px,
+                #3D6B3E 24px, #3D6B3E 48px,
+                #F5EDD8 48px, #F5EDD8 72px
+            );
+            z-index: 200;
+        }
+
+        /* Flipbook container */
+        #flipbook-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2C1A0E;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        #flipbook {
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .page {
+            background: transparent !important;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .page canvas {
+            max-width: 100%;
+            max-height: 100vh;
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            image-rendering: auto;
+        }
+
+        .turn-page-shadow {
+            box-shadow: 0 10px 40px rgba(139, 26, 26, 0.35) !important;
+        }
+
+        .turn-page { transition: box-shadow 0.2s ease; }
+
+        /* Loader */
+        .loader {
+            border: 4px solid #C9AA6E;
+            border-top: 4px solid #8B1A1A;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        ::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .top-bar, .bottom-controls, .download-btn {
+            z-index: 100;
+            pointer-events: auto;
+        }
+
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .page { user-select: none; -webkit-user-select: none; }
+
+        /* Top bar */
+        .top-bar {
+            position: absolute;
+            top: 4px; left: 0;
+            width: 100%;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(44,26,14,0.97) 60%, transparent);
+            pointer-events: none;
+        }
+
+        .btn-back {
+            pointer-events: auto;
+            background: #8B1A1A;
+            color: #F5EDD8;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 13px;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-back:hover { background: #5C1010; }
+
+        .title-block { text-align: right; max-width: 58%; }
+
+        .book-event-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            color: #C9AA6E;
+            text-transform: uppercase;
+        }
+
+        #book-title {
+            color: #F5EDD8;
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.2;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #book-artist {
+            color: #C9AA6E;
+            font-size: 11px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Loader overlay */
+        #loader-container {
+            position: absolute;
+            inset: 0;
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(44,26,14,0.96);
+            backdrop-filter: blur(4px);
+            gap: 14px;
+        }
+
+        .loader-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 0.1em;
+            color: #8B1A1A;
+        }
+
+        #loader-text {
+            color: #C9AA6E;
+            font-size: 13px;
+            font-family: 'Inter', monospace;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .loader-sub {
+            color: #7A6540;
+            font-size: 11px;
+            text-align: center;
+            max-width: 260px;
+        }
+
+        /* Progress bar */
+        .loader-progress-wrap {
+            width: 200px;
+            height: 4px;
+            background: #4A3520;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .loader-progress-bar {
+            height: 100%;
+            background: #8B1A1A;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* Bottom controls */
+        .bottom-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+            padding: 0 16px;
+        }
+
+        .ctrl-btn {
+            background: rgba(44,26,14,0.88);
+            border: 1.5px solid #C9AA6E;
+            color: #F5EDD8;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            backdrop-filter: blur(4px);
+        }
+
+        .ctrl-btn:hover:not(:disabled) {
+            background: #8B1A1A;
+            border-color: #8B1A1A;
+            color: #F5EDD8;
+        }
+
+        #page-indicator {
+            background: rgba(44,26,14,0.85);
+            border: 1.5px solid #C9AA6E;
+            color: #F5EDD8;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            min-width: 80px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            font-family: 'Inter', monospace;
+        }
+
+        /* Download button */
+        #download-btn {
+            position: absolute;
+            top: 68px;
+            right: 16px;
+            z-index: 100;
+            background: #3D6B3E;
+            color: #F5EDD8;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: background 0.2s;
+            border: 1.5px solid #5A9E5C;
+            font-family: 'Inter', sans-serif;
+        }
+        #download-btn:hover { background: #2B4E2C; }
+
+        /* Accent stripe bottom */
+        .accent-stripe-bottom {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: repeating-linear-gradient(
+                90deg,
+                #8B1A1A 0px, #8B1A1A 24px,
+                #3D6B3E 24px, #3D6B3E 48px,
+                #F5EDD8 48px, #F5EDD8 72px
+            );
+            z-index: 200;
+        }
+
+        @media (max-width: 768px) {
+            .turn-page { box-shadow: none !important; }
+            #flipbook { transform: scale(0.95); }
+            #book-title { font-size: 13px; }
+            .btn-back { font-size: 12px; padding: 7px 13px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="accent-stripe-top"></div>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    <a href="index.html" class="btn-back">
+        &#8592; Katalog
+    </a>
+    <div class="title-block">
+        <div class="book-event-label">Ngawiti 2 &bull; Tilas ing Jagad</div>
+        <h1 id="book-title">Memuat...</h1>
+        <p id="book-artist">...</p>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loader-container">
+    <div class="loader"></div>
+    <div class="loader-title">Ngawiti 2</div>
+    <p id="loader-text">Menyiapkan flipbook HD...</p>
+    <div class="loader-progress-wrap">
+        <div class="loader-progress-bar" id="loader-progress"></div>
+    </div>
+    <p class="loader-sub">Semua halaman akan tampil berurutan</p>
+</div>
+
+<!-- Flipbook Container -->
+<div id="flipbook-container">
+    <div id="flipbook"></div>
+</div>
+
+<!-- Bottom Navigation Controls -->
+<div class="bottom-controls">
+    <button id="btn-prev" class="ctrl-btn" disabled>&#10094;</button>
+    <span id="page-indicator">1 / -</span>
+    <button id="btn-next" class="ctrl-btn">&#10095;</button>
+</div>
+
+<!-- Download Button -->
+<a id="download-btn" href="#" download>
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+    </svg>
+    Download
+</a>
+
+<div class="accent-stripe-bottom"></div>
+
+<!-- Main App Logic -->
+<script src="js/app.js"></script>
+</body>
+</html>

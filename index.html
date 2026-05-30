@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pameran Seni Digital | Ngawiti 2 | Disporabudpar</title>
+    <meta name="description" content="E-Katalog Pameran Seni Ngawiti 2 - Disporabudpar - 5-9 Juni 2026">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5EDD8;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        /* Accent stripe */
+        .accent-stripe {
+            height: 5px;
+            background: repeating-linear-gradient(
+                90deg,
+                #8B1A1A 0px, #8B1A1A 24px,
+                #3D6B3E 24px, #3D6B3E 48px,
+                #F5EDD8 48px, #F5EDD8 72px
+            );
+        }
+
+        /* Header */
+        .header-bar {
+            background: #F5EDD8;
+            border-bottom: 3px solid #8B1A1A;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            padding: 16px 24px;
+        }
+
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .event-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: #8B1A1A;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .header-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            line-height: 0.9;
+            color: #8B1A1A;
+            letter-spacing: 0.04em;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            color: #5C4A1E;
+            margin-top: 5px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .kreasi-tag {
+            display: inline-flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .kreasi-tag span {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #3D6B3E;
+            padding: 2px 7px;
+            border: 1.5px solid #3D6B3E;
+            border-radius: 3px;
+        }
+
+        .header-meta {
+            background: #8B1A1A;
+            color: #F5EDD8;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 11px;
+            line-height: 1.7;
+            text-align: right;
+        }
+
+        .header-meta strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        /* Search section */
+        .search-section {
+            background: #EDE0C0;
+            border-bottom: 1.5px solid #C9AA6E;
+            padding: 14px 24px;
+        }
+
+        .search-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8B1A1A;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 9px 12px 9px 36px;
+            background: #F5EDD8;
+            border: 1.5px solid #8B1A1A;
+            border-radius: 7px;
+            font-size: 13px;
+            color: #1a1a1a;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-input::placeholder { color: #9B8A6A; }
+        .search-input:focus {
+            border-color: #5C1010;
+            box-shadow: 0 0 0 3px rgba(139,26,26,0.15);
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 1.5px solid #8B1A1A;
+            background: transparent;
+            color: #8B1A1A;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #8B1A1A;
+            color: #F5EDD8;
+        }
+
+        /* Results bar */
+        .results-bar {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 10px 24px 4px;
+            font-size: 12px;
+            color: #5C4A1E;
+            letter-spacing: 0.04em;
+        }
+
+        .results-bar .highlight { color: #8B1A1A; font-weight: 700; }
+
+        /* Gallery */
+        .gallery-main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px 24px 60px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        @media (min-width: 900px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        /* Card */
+        .karya-card {
+            background: #EDE0C0;
+            border: 1.5px solid #C9AA6E;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .karya-card:hover {
+            transform: translateY(-6px);
+            border-color: #8B1A1A;
+            box-shadow: 0 12px 28px rgba(139,26,26,0.18);
+        }
+
+        .card-thumb {
+            aspect-ratio: 3/4;
+            background: #D4B896;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-thumb-icon {
+            font-size: 40px;
+            opacity: 0.55;
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card-thumb img.loaded { opacity: 1; }
+
+        .card-thumb.has-thumb .card-thumb-icon { opacity: 0; }
+
+        .card-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #8B1A1A;
+            color: #F5EDD8;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .card-featured {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #3D6B3E;
+            color: #F5EDD8;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            padding: 3px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .card-info {
+            padding: 10px 12px 12px;
+            border-top: 1.5px solid #C9AA6E;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a1a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+
+        .card-artist {
+            font-size: 11px;
+            color: #8B1A1A;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #7A6540;
+            margin-top: 6px;
+        }
+
+        /* Shimmer */
+        .shimmer {
+            background: linear-gradient(90deg, #D4B896 25%, #E8D4AE 50%, #D4B896 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: -200% 0; }
+            100% { background-position:  200% 0; }
+        }
+
+        /* States */
+        .loading-state,
+        .empty-state,
+        .error-state {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .spinner {
+            width: 52px;
+            height: 52px;
+            border: 3px solid #D4B896;
+            border-top-color: #8B1A1A;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .state-icon { font-size: 52px; }
+
+        .state-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 26px;
+            letter-spacing: 0.06em;
+            color: #8B1A1A;
+        }
+
+        .state-sub { font-size: 13px; color: #7A6540; }
+
+        .btn-action {
+            display: inline-block;
+            padding: 10px 24px;
+            background: #8B1A1A;
+            color: #F5EDD8;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: background 0.2s;
+            margin-top: 4px;
+        }
+
+        .btn-action:hover { background: #5C1010; }
+
+        /* Pagination */
+        .pagination-wrap {
+            margin-top: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pagination-info { font-size: 12px; color: #5C4A1E; }
+
+        .pagination-btns {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page-btn {
+            padding: 7px 13px;
+            border: 1.5px solid #C9AA6E;
+            border-radius: 6px;
+            background: #EDE0C0;
+            color: #1a1a1a;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #8B1A1A;
+            color: #F5EDD8;
+            border-color: #8B1A1A;
+        }
+
+        .page-btn.active {
+            background: #8B1A1A;
+            color: #F5EDD8;
+            border-color: #8B1A1A;
+            cursor: default;
+        }
+
+        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Footer */
+        .footer-bar {
+            background: #8B1A1A;
+            color: #F5EDD8;
+            text-align: center;
+            padding: 20px 24px;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .footer-sub { font-size: 10px; opacity: 0.65; margin-top: 4px; }
+
+        /* Responsive tweaks */
+        @media (max-width: 600px) {
+            .header-title { font-size: 36px; }
+            .header-meta  { display: none; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .gallery-main { padding: 14px 14px 50px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="accent-stripe"></div>
+
+<!-- HEADER -->
+<header class="header-bar">
+    <div class="header-inner">
+        <div>
+            <div class="event-label">Disporabudpar &bull; E-Katalog Pameran Seni</div>
+            <div class="header-title">Ngawiti 2</div>
+            <div class="header-subtitle">Tilas ing Jagad &mdash; 5&ndash;9 Juni 2026</div>
+            <div class="kreasi-tag">
+                <span>Kreasi</span><span>Ide</span><span>Aksi</span>
+            </div>
+        </div>
+        <div class="header-meta">
+            <strong>Gedung Balai Budaya PU Sindok</strong>
+            Kabupaten Nganjuk<br>
+            Open Gallery 14:00 &ndash; 20:00
+        </div>
+    </div>
+</header>
+
+<!-- SEARCH & FILTER -->
+<section class="search-section">
+    <div class="search-inner">
+        <div class="search-row">
+            <div class="search-wrap">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="search-input" class="search-input"
+                       placeholder="Cari karya, seniman, atau tahun..."
+                       aria-label="Cari karya seni">
+            </div>
+            <button class="filter-btn active" data-filter="all">Semua Karya</button>
+        </div>
+    </div>
+</section>
+
+<!-- RESULTS BAR -->
+<div class="results-bar">
+    Menampilkan <span class="highlight" id="shown-count">0</span>
+    dari <span class="highlight" id="total-count">0</span> karya
+</div>
+
+<!-- GALLERY -->
+<main class="gallery-main">
+    <div id="gallery-grid" class="gallery-grid">
+        <!-- Loading state -->
+        <div class="loading-state" id="loading-state">
+            <div class="spinner"></div>
+            <div class="state-title">Memuat Katalog Pameran</div>
+            <div class="state-sub">Harap tunggu sebentar...</div>
+        </div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" style="display:none;" class="gallery-grid">
+        <div class="empty-state">
+            <div class="state-icon">🔍</div>
+            <div class="state-title">Tidak ada karya ditemukan</div>
+            <div class="state-sub">Coba ubah kata kunci atau filter pencarian</div>
+            <button class="btn-action" onclick="resetFilters()">Reset Pencarian</button>
+        </div>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" style="display:none;" class="gallery-grid">
+        <div class="error-state">
+            <div class="state-icon">⚠️</div>
+            <div class="state-title">Gagal Memuat Data</div>
+            <div class="state-sub" id="error-msg">Terjadi kesalahan saat mengambil data karya</div>
+            <button class="btn-action" onclick="location.reload()">Coba Lagi</button>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination-wrap" class="pagination-wrap" style="display:none;">
+        <div class="pagination-info" id="page-info">Halaman 1 dari 1</div>
+        <div class="pagination-btns">
+            <button id="btn-prev" class="page-btn" disabled>&larr; Sebelumnya</button>
+            <div id="page-numbers" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;"></div>
+            <button id="btn-next" class="page-btn" disabled>Berikutnya &rarr;</button>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer-bar">
+    &copy; 2026 Disporabudpar
+    <div class="footer-sub">Dibuat untuk mendukung seni dan budaya Indonesia &hearts;</div>
+</footer>
+
+<div class="accent-stripe"></div>
+
+<script>
+    /* ── Config ── */
+    const ITEMS_PER_PAGE = 8;
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    /* ── State ── */
+    let allKarya = [], filteredKarya = [], currentPage = 1;
+    let searchQuery = '', currentFilter = 'all';
+    const pdfCache = new Map();
+
+    /* ── Init ── */
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        setupListeners();
+    });
+
+    /* ── Load JSON ── */
+    async function loadData() {
+        try {
+            const res = await fetch('data.json');
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            allKarya = await res.json();
+            filteredKarya = [...allKarya];
+            document.getElementById('total-count').textContent = allKarya.length;
+            renderGrid();
+        } catch (e) {
+            showError('Gagal memuat data.json: ' + e.message);
+        }
+    }
+
+    /* ── Render Grid ── */
+    function renderGrid() {
+        const grid      = document.getElementById('gallery-grid');
+        const emptyEl   = document.getElementById('empty-state');
+        const paginEl   = document.getElementById('pagination-wrap');
+        const shownEl   = document.getElementById('shown-count');
+        const totalEl   = document.getElementById('total-count');
+
+        grid.style.display    = '';
+        emptyEl.style.display = 'none';
+
+        const total      = filteredKarya.length;
+        const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const items = filteredKarya.slice(start, start + ITEMS_PER_PAGE);
+
+        totalEl.textContent = total;
+        shownEl.textContent = items.length;
+
+        /* clear previous cards (keep static states hidden) */
+        grid.innerHTML = '';
+        const loadingEl = document.getElementById('loading-state');
+        loadingEl?.remove();
+
+        if (total === 0) {
+            grid.style.display    = 'none';
+            emptyEl.style.display = '';
+            paginEl.style.display = 'none';
+            return;
+        }
+
+        items.forEach((k, i) => {
+            const card = createCard(k);
+            card.style.animationDelay = (i * 45) + 'ms';
+            grid.appendChild(card);
+            if (k.type?.toLowerCase() === 'pdf' && k.file) {
+                renderPdfThumb(card.querySelector('img'), k.file);
+            }
+        });
+
+        updatePagination(total, totalPages);
+    }
+
+    /* ── Create Card ── */
+    function createCard(k) {
+        const type = (k.type || 'pdf').toLowerCase();
+        const icon = (type === 'ppt' || type === 'pptx') ? '📊' : '📄';
+
+        const a = document.createElement('a');
+        a.href      = `detail.html?id=${k.id}`;
+        a.className = 'karya-card';
+        a.setAttribute('aria-label', `Lihat karya: ${k.title} oleh ${k.artist}`);
+
+        a.innerHTML = `
+            <div class="card-thumb shimmer">
+                <div class="card-thumb-icon">${icon}</div>
+                <img alt="Sampul ${escHtml(k.title)}" loading="lazy">
+                <span class="card-badge">${escHtml(type)}</span>
+                ${k.featured ? '<span class="card-featured">&#9733; Pilihan</span>' : ''}
+            </div>
+            <div class="card-info">
+                <div class="card-title" title="${escHtml(k.title)}">${escHtml(k.title)}</div>
+                <div class="card-artist">${escHtml(k.artist)}</div>
+                <div class="card-meta">
+                    <span>${escHtml(k.year)}</span>
+                    <span>${escHtml(k.medium || '')}</span>
+                </div>
+            </div>`;
+        return a;
+    }
+
+    /* ── PDF Thumbnail ── */
+    async function renderPdfThumb(imgEl, url) {
+        try {
+            if (!pdfCache.has(url)) {
+                pdfCache.set(url, (async () => {
+                    const pdf      = await pdfjsLib.getDocument(url).promise;
+                    const page     = await pdf.getPage(1);
+                    const vp       = page.getViewport({ scale: 1 });
+                    const dpr      = Math.min(window.devicePixelRatio || 1, 2);
+                    const tw = 360 * dpr, th = 480 * dpr;
+                    const scale    = Math.max(tw / vp.width, th / vp.height);
+                    const rvp      = page.getViewport({ scale });
+                    const rc       = document.createElement('canvas');
+                    rc.width = rvp.width; rc.height = rvp.height;
+                    await page.render({ canvasContext: rc.getContext('2d'), viewport: rvp }).promise;
+                    const cc       = document.createElement('canvas');
+                    cc.width = tw; cc.height = th;
+                    const cx       = cc.getContext('2d');
+                    cx.drawImage(rc, (tw - rc.width) / 2, (th - rc.height) / 2);
+                    return cc.toDataURL('image/jpeg', 0.9);
+                })());
+            }
+            const src  = await pdfCache.get(url);
+            imgEl.src  = src;
+            imgEl.onload = () => {
+                imgEl.classList.add('loaded');
+                imgEl.closest('.card-thumb')?.classList.add('has-thumb');
+            };
+        } catch (_) { /* keep icon placeholder */ }
+    }
+
+    /* ── Pagination ── */
+    function updatePagination(total, totalPages) {
+        const wrap    = document.getElementById('pagination-wrap');
+        const info    = document.getElementById('page-info');
+        const prevBtn = document.getElementById('btn-prev');
+        const nextBtn = document.getElementById('btn-next');
+        const nums    = document.getElementById('page-numbers');
+
+        if (total <= ITEMS_PER_PAGE) { wrap.style.display = 'none'; return; }
+        wrap.style.display = 'flex';
+
+        info.textContent    = `Halaman ${currentPage} dari ${totalPages}`;
+        prevBtn.disabled    = currentPage <= 1;
+        nextBtn.disabled    = currentPage >= totalPages;
+
+        nums.innerHTML = '';
+        const pages = buildPageRange(currentPage, totalPages);
+        if (pages[0] > 1) addEllipsis(nums);
+        pages.forEach(p => {
+            const b = document.createElement('button');
+            b.className   = 'page-btn' + (p === currentPage ? ' active' : '');
+            b.textContent = p;
+            b.disabled    = p === currentPage;
+            b.onclick     = () => goPage(p);
+            nums.appendChild(b);
+        });
+        if (pages[pages.length - 1] < totalPages) addEllipsis(nums);
+    }
+
+    function buildPageRange(cur, total) {
+        if (total <= 5) return [...Array(total)].map((_, i) => i + 1);
+        if (cur <= 3)   return [1, 2, 3, 4, 5];
+        if (cur >= total - 2) return [total-4, total-3, total-2, total-1, total];
+        return [cur-2, cur-1, cur, cur+1, cur+2];
+    }
+
+    function addEllipsis(container) {
+        const s = document.createElement('span');
+        s.textContent = '…';
+        s.style.cssText = 'padding: 7px 4px; color: #7A6540; font-size: 12px;';
+        container.appendChild(s);
+    }
+
+    function goPage(p) {
+        currentPage = p;
+        renderGrid();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ── Filter & Search ── */
+    function applyFilters() {
+        let res = [...allKarya];
+        if (currentFilter !== 'all') {
+            res = res.filter(k => (k.type || 'pdf').toLowerCase() === currentFilter);
+        }
+        if (searchQuery) {
+            res = res.filter(k =>
+                k.title.toLowerCase().includes(searchQuery) ||
+                k.artist.toLowerCase().includes(searchQuery) ||
+                (k.medium || '').toLowerCase().includes(searchQuery) ||
+                k.year.includes(searchQuery)
+            );
+        }
+        currentPage    = 1;
+        filteredKarya  = res;
+        renderGrid();
+    }
+
+    function resetFilters() {
+        searchQuery = ''; currentFilter = 'all'; currentPage = 1;
+        document.getElementById('search-input').value = '';
+        document.querySelectorAll('.filter-btn').forEach((b, i) => {
+            b.classList.toggle('active', i === 0);
+        });
+        filteredKarya = [...allKarya];
+        renderGrid();
+        document.getElementById('search-input').focus();
+    }
+    window.resetFilters = resetFilters;
+
+    /* ── Listeners ── */
+    function setupListeners() {
+        document.getElementById('search-input').addEventListener('input', e => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            applyFilters();
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                currentFilter = e.currentTarget.dataset.filter;
+                applyFilters();
+            });
+        });
+
+        document.getElementById('btn-prev').addEventListener('click', () => goPage(currentPage - 1));
+        document.getElementById('btn-next').addEventListener('click', () => goPage(currentPage + 1));
+
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('search-input').focus();
+            }
+        });
+    }
+
+    /* ── Error State ── */
+    function showError(msg) {
+        document.getElementById('gallery-grid').style.display = 'none';
+        document.getElementById('error-state').style.display  = '';
+        document.getElementById('error-msg').textContent       = msg;
+        document.getElementById('pagination-wrap').style.display = 'none';
+    }
+
+    /* ── Utility ── */
+    function escHtml(str) {
+        return String(str ?? '')
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+</script>
+</body>
+</html>
