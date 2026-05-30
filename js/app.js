@@ -177,16 +177,44 @@ function initTurnFlipbook() {
 
     /* Touch / swipe */
     let touchStartX = 0, touchStartY = 0;
+    let pinchStartDistance = 0;
+    let pinchStartZoom = currentZoom;
+    let isPinching = false;
     const flipbookEl = $flipbook[0];
     if (!flipbookEl) return;
 
     flipbookEl.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            isPinching = true;
+            pinchStartDistance = Math.hypot(
+                e.touches[0].screenX - e.touches[1].screenX,
+                e.touches[0].screenY - e.touches[1].screenY
+            );
+            pinchStartZoom = currentZoom;
+            return;
+        }
         touchStartX = e.changedTouches[0].screenX;
         touchStartY = e.changedTouches[0].screenY;
     }, { passive: true });
 
+    flipbookEl.addEventListener('touchmove', (e) => {
+        if (!isPinching || e.touches.length !== 2) return;
+        e.preventDefault();
+        const currentDistance = Math.hypot(
+            e.touches[0].screenX - e.touches[1].screenX,
+            e.touches[0].screenY - e.touches[1].screenY
+        );
+        const scaleFactor = currentDistance / pinchStartDistance;
+        const nextZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, pinchStartZoom * scaleFactor));
+        if (nextZoom !== currentZoom) {
+            currentZoom = nextZoom;
+            applyZoom();
+        }
+    }, { passive: false });
+
     flipbookEl.addEventListener('touchend', (e) => {
         if (isFlipping) return;
+        if (e.touches.length < 2) isPinching = false;
         const diffX = touchStartX - e.changedTouches[0].screenX;
         const diffY = touchStartY - e.changedTouches[0].screenY;
         if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
