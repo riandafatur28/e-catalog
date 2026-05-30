@@ -16,6 +16,7 @@ let currentZoom = 1;
 const ZOOM_MIN = 0.7;
 const ZOOM_MAX = 2.2;
 const ZOOM_STEP = 0.2;
+const ZOOM_RESET = 1;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await initFlipbook();
@@ -63,67 +64,73 @@ async function loadAndRenderPDF(pdfUrl) {
 
         pdfDoc     = await pdfjsLib.getDocument(pdfUrl).promise;
         totalPages = pdfDoc.numPages;
+        setLoaderText('Menyiapkan halaman pertama...');
 
-        setLoaderText(`Merender ${totalPages} halaman HD...`);
-
-        const screenWidth       = window.innerWidth;
-        const screenHeight      = window.innerHeight;
-        const devicePixelRatio  = Math.max(window.devicePixelRatio || 1, 1);
+        const screenWidth      = window.innerWidth;
+        const screenHeight     = window.innerHeight;
+        const devicePixelRatio = Math.max(window.devicePixelRatio || 1, 1);
 
         for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-            const page      = await pdfDoc.getPage(pageNum);
-            const defaultVP = page.getViewport({ scale: 1 });
-
-            const widthScale  = (screenWidth  * 0.98 * devicePixelRatio) / defaultVP.width;
-            const heightScale = (screenHeight * 0.94 * devicePixelRatio) / defaultVP.height;
-            const baseScale   = Math.min(widthScale, heightScale);
-            const hdScale     = Math.min(baseScale * 1.8, 10);
-
-            const viewport = page.getViewport({ scale: hdScale });
-
             const pageDiv = document.createElement('div');
             pageDiv.className = 'page';
             pageDiv.dataset.pageNumber = pageNum;
+            pageDiv.dataset.rendered = 'false';
 
             const canvas = document.createElement('canvas');
-            const ctx    = canvas.getContext('2d');
-            canvas.width        = viewport.width;
-            canvas.height       = viewport.height;
-            canvas.style.width  = '100%';
+            canvas.style.width = '100%';
             canvas.style.height = 'auto';
-            ctx.imageSmoothingEnabled  = true;
-            ctx.imageSmoothingQuality  = 'high';
-
-            await page.render({
-                canvasContext: ctx,
-                viewport: viewport,
-                intent: 'display'
-            }).promise;
-
-            pageDiv.appendChild(canvas);
-            document.getElementById('flipbook').appendChild(pageDiv);
-
             canvas.style.transformOrigin = 'center center';
             canvas.style.transition = 'transform 0.18s ease';
-
-            /* update progress bar & text */
-            const pct = Math.round((pageNum / totalPages) * 100);
-            const bar = document.getElementById('loader-progress');
-            if (bar) bar.style.width = pct + '%';
-
-            if (pageNum % 5 === 0 || pageNum === totalPages) {
-                setLoaderText(`Memproses: ${pageNum} / ${totalPages} halaman`);
-            }
+            pageDiv.appendChild(canvas);
+            document.getElementById('flipbook').appendChild(pageDiv);
         }
 
+        await renderPdfPage(1, screenWidth, screenHeight, devicePixelRatio);
         document.getElementById('loader-container').style.display = 'none';
         initTurnFlipbook();
+        const schedule = (fn) => {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(fn, { timeout: 500 });
+            } else {
+                setTimeout(fn, 100);
+            }
+        };
+        schedule(() => preloadAdjacentPages(1));
 
     } catch (error) {
         console.error('PDF error:', error);
         showError(`Gagal memuat PDF: ${error.message}`);
     }
 }
+
+async function renderPdfPage(pageNum, screenWidth, screenHeight, devicePixelRatio) {
+    if (!pdfDoc) return;
+    const pageDiv = document.querySelector(`.page[data-page-number="${pageNum}"]`);
+    if (!pageDiv) return;
+    const canvas = pageDiv.querySelector('canvas');
+    if (!canvas || canvas.dataset.rendered === 'true') return;
+
+    try {
+        const page      = await pdfDoc.getPage(pageNum);
+        const defaultVP = page.getViewport({ scale: 1 });
+        const widthScale  = (screenWidth  * 0.98 * devicePixelRatio) / defaultVP.width;
+        const heightScale = (screenHeight * 0.94 * devicePixelRatio) / defaultVP.height;
+        const baseScale   = Math.min(widthScale, heightScale);
+        const hdScale     = Math.min(baseScale * 1.4, 4);
+        const viewport    = page.getViewport({ scale: hdScale });
+        const ctx         = canvas.getContext('2d');
+        canvas.width      = viewport.width;
+        canvas.height     = viewport.height;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        await page.render({ canvasContext: ctx, viewport, intent: 'display' }).promise;
+        canvas.dataset.rendered = 'true';
+        preloadCache[pageNum] = canvas;
+    } catch (error) {
+        console.warn('Render page failed:', pageNum, error);
+    }
+}
+
 
 function initTurnFlipbook() {
     const $book     = $('#flipbook');
@@ -147,6 +154,7 @@ function initTurnFlipbook() {
             turned: function(event, page) {
                 isFlipping = false;
                 updatePageIndicator(page);
+                renderPdfPage(page, window.innerWidth, window.innerHeight, Math.max(window.devicePixelRatio || 1, 1));
                 updateNavButtons(page);
                 preloadAdjacentPages(page);
             }
@@ -156,10 +164,12 @@ function initTurnFlipbook() {
     $flipbook = $book;
 
     document.getElementById('btn-prev').onclick = () => {
-        if (!isFlipping && $flipbook) $flipbook.turn('previous');
+        if (zoomActive() || isFlipping || !$flipbook) return;
+        $flipbook.turn('previous');
     };
     document.getElementById('btn-next').onclick = () => {
-        if (!isFlipping && $flipbook) $flipbook.turn('next');
+        if (zoomActive() || isFlipping || !$flipbook) return;
+        $flipbook.turn('next');
     };
     document.getElementById('btn-zoom-in').onclick = () => changeZoom(ZOOM_STEP);
     document.getElementById('btn-zoom-out').onclick = () => changeZoom(-ZOOM_STEP);
@@ -168,7 +178,7 @@ function initTurnFlipbook() {
     if (zoomResetBtn) zoomResetBtn.onclick = resetZoom;
 
     document.addEventListener('keydown', (e) => {
-        if (isFlipping || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (zoomActive() || isFlipping || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   { e.preventDefault(); $flipbook?.turn('previous'); }
         if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); $flipbook?.turn('next'); }
         if (e.key === 'Home') { e.preventDefault(); $flipbook?.turn(1); }
@@ -217,6 +227,7 @@ function initTurnFlipbook() {
         if (e.touches.length < 2) isPinching = false;
         const diffX = touchStartX - e.changedTouches[0].screenX;
         const diffY = touchStartY - e.changedTouches[0].screenY;
+        if (zoomActive()) return;
         if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
             e.preventDefault();
             diffX > 0 ? $flipbook.turn('next') : $flipbook.turn('previous');
@@ -231,7 +242,7 @@ function initTurnFlipbook() {
     }, { passive: true });
 
     flipbookEl.addEventListener('click', (e) => {
-        if (isFlipping) return;
+        if (isFlipping || zoomActive()) return;
         if (e.target.closest('.ctrl-btn') || e.target.closest('#download-btn') || e.target.closest('.btn-back')) return;
         const clickX = e.clientX;
         if (clickX > window.innerWidth * 0.55) {
@@ -258,6 +269,8 @@ function initTurnFlipbook() {
     preloadAdjacentPages(1);
     applyZoom();
 
+    if (zoomActive()) updateNavButtons(1);
+
     console.log(`Flipbook siap — ${totalPages} halaman, mode single, HD`);
 }
 
@@ -272,8 +285,13 @@ function updateNavButtons(page) {
     const cur = page ?? ($flipbook ? $flipbook.turn('page') : 1);
     const prev = document.getElementById('btn-prev');
     const next = document.getElementById('btn-next');
-    if (prev) prev.disabled = cur <= 1;
-    if (next) next.disabled = cur >= totalPages;
+    const disabledByZoom = zoomActive();
+    if (prev) prev.disabled = disabledByZoom || cur <= 1;
+    if (next) next.disabled = disabledByZoom || cur >= totalPages;
+}
+
+function zoomActive() {
+    return currentZoom !== ZOOM_RESET;
 }
 
 function setLoaderText(text) {
@@ -294,7 +312,7 @@ async function preloadAdjacentPages(current) {
             const dpr      = Math.max(window.devicePixelRatio || 1, 1);
             const wScale   = (window.innerWidth  * dpr) / defVP.width;
             const hScale   = (window.innerHeight * dpr) / defVP.height;
-            const hdScale  = Math.min(Math.min(wScale, hScale) * 1.8, 10);
+            const hdScale  = Math.min(Math.min(wScale, hScale) * 1.4, 4);
             const viewport = page.getViewport({ scale: hdScale });
 
             const offscreen = document.createElement('canvas');
@@ -348,11 +366,13 @@ function changeZoom(amount) {
     if (nextZoom === currentZoom) return;
     currentZoom = nextZoom;
     applyZoom();
+    updateNavButtons();
 }
 
 function resetZoom() {
     currentZoom = 1;
     applyZoom();
+    updateNavButtons();
 }
 
 window.flipPrev = () => $flipbook?.turn('previous');
