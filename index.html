@@ -274,6 +274,7 @@
             opacity: 0.55;
             z-index: 1;
             transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .card-thumb img {
@@ -314,7 +315,6 @@
         }
 
         .card-thumb img.loaded { opacity: 1; }
-
         .card-thumb.has-thumb .card-thumb-icon { opacity: 0; }
 
         .card-badge {
@@ -345,14 +345,6 @@
             border-radius: 4px;
             text-transform: uppercase;
             z-index: 2;
-        }
-
-        .card-thumb-icon {
-            font-size: 40px;
-            opacity: 0.55;
-            z-index: 1;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
         }
 
         .card-title {
@@ -449,18 +441,18 @@
 
         .btn-action:hover { background: #5C1010; }
 
-        /* Pagination - Dynamic Island */
+        /* ── Pagination ── */
         .pagination-wrap {
-            margin-top: 40px;
-            margin-bottom: 20px;
+            margin-top: 28px;
+            margin-bottom: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 8px;
         }
 
         .pagination-info {
-            font-size: 11px;
+            font-size: 12px;
             color: #5C4A1E;
             letter-spacing: 0.04em;
             text-transform: uppercase;
@@ -468,46 +460,52 @@
 
         .pagination-btns {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 6px;
+            flex-wrap: nowrap;
             justify-content: center;
             align-items: center;
-            background: rgba(139, 26, 26, 0.06);
-            border: 1.5px solid #C9AA6E;
+            background: rgba(139, 26, 26, 0.04);
+            border: 1.25px solid #C9AA6E;
             border-radius: 999px;
-            padding: 10px 16px;
-            width: min(80vw, 600px);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 8px 24px rgba(139,26,26,0.1);
-            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            padding: 6px 10px;
+            max-width: min(74vw, 520px);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 6px 18px rgba(139,26,26,0.08);
+            transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
+        .pagination-btns::-webkit-scrollbar { display: none; }
+
         .pagination-btns:hover {
-            background: rgba(139, 26, 26, 0.1);
+            background: rgba(139, 26, 26, 0.08);
             border-color: #8B1A1A;
-            box-shadow: 0 12px 32px rgba(139,26,26,0.16);
+            box-shadow: 0 10px 26px rgba(139,26,26,0.12);
         }
 
         .page-btn {
-            padding: 8px 14px;
-            border: 1.5px solid rgba(139, 26, 26, 0.3);
-            border-radius: 999px;
+            padding: 6px 10px;
+            border: 1px solid rgba(139, 26, 26, 0.24);
+            border-radius: 10px;
             background: transparent;
             color: #1a1a1a;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 600;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.02em;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
-            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: all 0.18s ease;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .page-btn:hover:not(:disabled) {
             background: #8B1A1A;
             color: #F5EDD8;
             border-color: #8B1A1A;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
         .page-btn.active {
@@ -515,12 +513,82 @@
             color: #F5EDD8;
             border-color: #8B1A1A;
             cursor: default;
+            transform: none;
             font-weight: 700;
         }
 
         .page-btn:disabled {
             opacity: 0.35;
             cursor: not-allowed;
+        }
+
+        #page-numbers {
+            display: flex;
+            gap: 4px;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #page-numbers .page-btn {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        #btn-prev, #btn-next {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        /* Mobile: compact single-row pagination */
+        @media (max-width: 600px) {
+            .pagination-info {
+                font-size: 11px;
+            }
+
+            .pagination-btns {
+                max-width: min(90vw, 340px);
+                padding: 5px 8px;
+                gap: 4px;
+            }
+
+            #btn-prev, #btn-next {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+
+            #page-numbers .page-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+            }
+
+            #page-numbers {
+                gap: 3px;
+            }
+
+            .page-btn .page-icon { display: inline-block; }
+            .page-btn .page-label { display: none; }
+        }
+
+        /* Desktop: show label, hide icon */
+        @media (min-width: 601px) {
+            .page-btn .page-icon { display: none; }
+            .page-btn .page-label { display: inline; }
         }
 
         /* Footer */
@@ -550,18 +618,6 @@
             .search-wrap {
                 min-width: 120px;
             }
-            .pagination-btns {
-                width: min(84vw, 480px);
-                gap: 8px;
-                padding: 9px 14px;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-            .page-btn {
-                padding: 6px 11px;
-                font-size: 9px;
-                flex-shrink: 0;
-            }
         }
 
         @media (max-width: 600px) {
@@ -577,18 +633,6 @@
             .filter-btn {
                 padding: 4px 8px;
                 font-size: 8px;
-            }
-            .pagination-btns {
-                width: min(88vw, 360px);
-                gap: 5px;
-                padding: 8px 11px;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-            .page-btn {
-                padding: 5px 9px;
-                font-size: 8px;
-                flex-shrink: 0;
             }
         }
     </style>
@@ -674,9 +718,15 @@
     <div id="pagination-wrap" class="pagination-wrap" style="display:none;">
         <div class="pagination-info" id="page-info">Halaman 1 dari 1</div>
         <div class="pagination-btns">
-            <button id="btn-prev" class="page-btn" disabled>&larr; Sebelumnya</button>
-            <div id="page-numbers" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;"></div>
-            <button id="btn-next" class="page-btn" disabled>Berikutnya &rarr;</button>
+            <button id="btn-prev" class="page-btn" disabled aria-label="Sebelumnya">
+                <span class="page-icon" aria-hidden="true">&#10094;</span>
+                <span class="page-label"><</span>
+            </button>
+            <div id="page-numbers"></div>
+            <button id="btn-next" class="page-btn" disabled aria-label="Berikutnya">
+                <span class="page-label">></span>
+                <span class="page-icon" aria-hidden="true">&#10095;</span>
+            </button>
         </div>
     </div>
 </main>
@@ -741,7 +791,6 @@
         totalEl.textContent = total;
         shownEl.textContent = items.length;
 
-        /* clear previous cards (keep static states hidden) */
         grid.innerHTML = '';
         const loadingEl = document.getElementById('loading-state');
         loadingEl?.remove();
@@ -876,7 +925,7 @@
     function addEllipsis(container) {
         const s = document.createElement('span');
         s.textContent = '…';
-        s.style.cssText = 'padding: 7px 4px; color: #7A6540; font-size: 12px;';
+        s.style.cssText = 'padding: 7px 4px; color: #7A6540; font-size: 12px; flex-shrink: 0;';
         container.appendChild(s);
     }
 
