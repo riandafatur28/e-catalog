@@ -15,6 +15,8 @@ let preloadCache = {};
 let currentZoom = 1;
 let panX = 0;
 let panY = 0;
+let hideIslandTimeout = null;
+let navIsland = null;
 const ZOOM_MIN = 0.7;
 const ZOOM_MAX = 2.2;
 const ZOOM_STEP = 0.2;
@@ -176,6 +178,11 @@ function initTurnFlipbook() {
     if (zoomOutBtn) zoomOutBtn.onclick = () => changeZoom(-ZOOM_STEP);
     if (zoomResetBtn) zoomResetBtn.onclick = resetZoom;
 
+    navIsland = document.querySelector('.nav-island');
+    if (navIsland) {
+        navIsland.classList.remove('visible');
+    }
+
     document.addEventListener('keydown', (e) => {
         if (zoomActive() || isFlipping || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); $flipbook.turn('previous'); }
@@ -196,6 +203,35 @@ function initTurnFlipbook() {
     if (!flipbookEl) return;
 
     flipbookEl.style.touchAction = 'auto';
+
+    const showNavIsland = () => {
+        if (!navIsland) return;
+        navIsland.classList.add('visible');
+        clearTimeout(hideIslandTimeout);
+        hideIslandTimeout = setTimeout(() => {
+            navIsland.classList.remove('visible');
+        }, 1200);
+    };
+
+    const maybeShowIsland = (y) => {
+        if (y > window.innerHeight - 140) {
+            showNavIsland();
+        }
+    };
+
+    window.addEventListener('mousemove', (e) => {
+        maybeShowIsland(e.clientY);
+    }, { passive: true });
+
+    window.addEventListener('touchstart', (e) => {
+        if (!e.touches.length) return;
+        maybeShowIsland(e.touches[0].clientY);
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!e.touches.length) return;
+        maybeShowIsland(e.touches[0].clientY);
+    }, { passive: true });
 
     flipbookEl.addEventListener('touchstart', (e) => {
         if (e.touches.length === 2) {

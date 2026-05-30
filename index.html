@@ -110,29 +110,47 @@
             letter-spacing: 0.04em;
         }
 
-        /* Search section */
+        /* Search section - Dynamic Island */
         .search-section {
-            background: #EDE0C0;
-            border-bottom: 1.5px solid #C9AA6E;
-            padding: 14px 24px;
+            background: transparent;
+            border-bottom: none;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .search-inner {
-            max-width: 1280px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
         .search-row {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
             flex-wrap: wrap;
+            background: rgba(139, 26, 26, 0.08);
+            border: 1.5px solid #C9AA6E;
+            border-radius: 999px;
+            padding: 10px 16px;
+            width: min(80vw, 600px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 24px rgba(139,26,26,0.12);
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .search-row:hover,
+        .search-row:focus-within {
+            background: rgba(139, 26, 26, 0.12);
+            border-color: #8B1A1A;
+            box-shadow: 0 12px 32px rgba(139,26,26,0.18);
         }
 
         .search-wrap {
             position: relative;
             flex: 1;
-            min-width: 200px;
+            min-width: 180px;
         }
 
         .search-icon {
@@ -163,18 +181,18 @@
         }
 
         .filter-btn {
-            padding: 8px 16px;
-            border-radius: 7px;
-            font-size: 12px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.06em;
             text-transform: uppercase;
             cursor: pointer;
-            border: 1.5px solid #8B1A1A;
+            border: 1.5px solid #C9AA6E;
             background: transparent;
-            color: #8B1A1A;
+            color: #1a1a1a;
             font-family: 'Inter', sans-serif;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
             white-space: nowrap;
         }
 
@@ -182,6 +200,7 @@
         .filter-btn:hover {
             background: #8B1A1A;
             color: #F5EDD8;
+            border-color: #8B1A1A;
         }
 
         /* Results bar */
@@ -430,42 +449,65 @@
 
         .btn-action:hover { background: #5C1010; }
 
-        /* Pagination */
+        /* Pagination - Dynamic Island */
         .pagination-wrap {
-            margin-top: 28px;
+            margin-top: 40px;
+            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 16px;
         }
 
-        .pagination-info { font-size: 12px; color: #5C4A1E; }
+        .pagination-info {
+            font-size: 11px;
+            color: #5C4A1E;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
 
         .pagination-btns {
             display: flex;
-            gap: 6px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
+            background: rgba(139, 26, 26, 0.06);
+            border: 1.5px solid #C9AA6E;
+            border-radius: 999px;
+            padding: 10px 16px;
+            width: min(80vw, 600px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 24px rgba(139,26,26,0.1);
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .pagination-btns:hover {
+            background: rgba(139, 26, 26, 0.1);
+            border-color: #8B1A1A;
+            box-shadow: 0 12px 32px rgba(139,26,26,0.16);
         }
 
         .page-btn {
-            padding: 7px 13px;
-            border: 1.5px solid #C9AA6E;
-            border-radius: 6px;
-            background: #EDE0C0;
+            padding: 8px 14px;
+            border: 1.5px solid rgba(139, 26, 26, 0.3);
+            border-radius: 999px;
+            background: transparent;
             color: #1a1a1a;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
+            letter-spacing: 0.04em;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
-            transition: all 0.15s;
+            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+            white-space: nowrap;
         }
 
         .page-btn:hover:not(:disabled) {
             background: #8B1A1A;
             color: #F5EDD8;
             border-color: #8B1A1A;
+            transform: translateY(-1px);
         }
 
         .page-btn.active {
@@ -473,9 +515,13 @@
             color: #F5EDD8;
             border-color: #8B1A1A;
             cursor: default;
+            font-weight: 700;
         }
 
-        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .page-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
 
         /* Footer */
         .footer-bar {
@@ -491,11 +537,59 @@
         .footer-sub { font-size: 10px; opacity: 0.65; margin-top: 4px; }
 
         /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .search-row {
+                width: min(84vw, 480px);
+                gap: 10px;
+                padding: 9px 14px;
+            }
+            .filter-btn {
+                font-size: 9px;
+                padding: 5px 11px;
+            }
+            .search-wrap {
+                min-width: 120px;
+            }
+            .pagination-btns {
+                width: min(84vw, 480px);
+                gap: 8px;
+                padding: 9px 14px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            .page-btn {
+                padding: 6px 11px;
+                font-size: 9px;
+                flex-shrink: 0;
+            }
+        }
+
         @media (max-width: 600px) {
             .header-title { font-size: 36px; }
             .header-meta  { display: none; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .gallery-main { padding: 14px 14px 50px; }
+            .search-row {
+                width: min(88vw, 360px);
+                gap: 6px;
+                padding: 8px 11px;
+            }
+            .filter-btn {
+                padding: 4px 8px;
+                font-size: 8px;
+            }
+            .pagination-btns {
+                width: min(88vw, 360px);
+                gap: 5px;
+                padding: 8px 11px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            .page-btn {
+                padding: 5px 9px;
+                font-size: 8px;
+                flex-shrink: 0;
+            }
         }
     </style>
 </head>

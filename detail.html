@@ -234,10 +234,95 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
             z-index: 100;
             padding: 0 16px;
         }
+
+        .nav-island {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(30, 18, 8, 0.95);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+            border-radius: 999px;
+            padding: 6px 10px;
+            backdrop-filter: blur(18px);
+            transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease, background 0.32s ease;
+            will-change: transform, opacity;
+            width: min(74vw, 460px);
+            justify-content: space-between;
+            opacity: 0;
+            transform: translateY(18px) scale(0.96);
+            pointer-events: none;
+        }
+
+        .nav-island:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-island.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .island-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.16);
+            color: #F5EDD8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1;
+            transition: background 0.2s, transform 0.2s, border-color 0.2s;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+        }
+
+        .island-btn:hover:not(:disabled) {
+            background: rgba(139,26,26,0.9);
+            border-color: #8B1A1A;
+            transform: translateY(-1px);
+        }
+
+        .island-status {
+            display: inline-flex;
+            min-width: 100px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: #F5EDD8;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.04em;
+        }
+
+        .nav-island .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-island .zoom-controls span {
+            min-width: 60px;
+            text-align: center;
+            color: #F5EDD8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-family: 'Inter', monospace;
+        }
+
 
         .zoom-controls {
             display: flex;
@@ -342,6 +427,28 @@
             #book-title { font-size: 13px; }
             .btn-back { font-size: 12px; padding: 7px 13px; }
             .bottom-controls { flex-wrap: wrap; gap: 8px; }
+            .nav-island {
+                width: min(92vw, 420px);
+                gap: 8px;
+                padding: 8px 10px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .island-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .island-status {
+                min-width: 80px;
+                padding: 7px 10px;
+                font-size: 11px;
+            }
+            .nav-island .zoom-controls span {
+                min-width: 45px;
+                padding: 6px 8px;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -378,16 +485,18 @@
 </div>
 
 <!-- Bottom Navigation Controls -->
-<div class="bottom-controls">
-    <button id="btn-prev" class="ctrl-btn" disabled>&#10094;</button>
-    <div class="zoom-controls">
-        <button id="btn-zoom-out" class="ctrl-btn" aria-label="Perkecil">-</button>
-        <span id="zoom-indicator">100%</span>
-        <button id="btn-zoom-in" class="ctrl-btn" aria-label="Perbesar">+</button>
+    <div class="bottom-controls">
+        <div class="nav-island">
+            <button id="btn-prev" class="island-btn" disabled aria-label="Halaman sebelumnya">&#10094;</button>
+            <span id="page-indicator" class="island-status">1 / -</span>
+            <div class="zoom-controls">
+                <button id="btn-zoom-out" class="island-btn" aria-label="Perkecil">-</button>
+                <span id="zoom-indicator">100%</span>
+                <button id="btn-zoom-in" class="island-btn" aria-label="Perbesar">+</button>
+            </div>
+            <button id="btn-next" class="island-btn" aria-label="Halaman berikutnya">&#10095;</button>
+        </div>
     </div>
-    <span id="page-indicator">1 / -</span>
-    <button id="btn-next" class="ctrl-btn">&#10095;</button>
-</div>
 
 <!-- Download Button -->
 <a id="download-btn" href="#" download>
