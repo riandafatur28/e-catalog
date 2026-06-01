@@ -447,34 +447,37 @@
             z-index: 200;
         }
 
-        @media (max-width: 768px) {
-            .turn-page { box-shadow: none !important; }
-            #flipbook { transform: scale(0.95); }
-            #book-title { font-size: 13px; }
-            .btn-back { font-size: 12px; padding: 7px 13px; }
-            .bottom-controls { flex-wrap: wrap; gap: 8px; }
-            .nav-island {
-                width: min(92vw, 420px);
-                gap: 8px;
-                padding: 8px 10px;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .island-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-            .island-status {
-                min-width: 80px;
-                padding: 7px 10px;
-                font-size: 11px;
-            }
-            .nav-island .zoom-controls span {
-                min-width: 45px;
-                padding: 6px 8px;
-                font-size: 10px;
-            }
+       /* Mobile — proporsional */
+@media (max-width: 768px) {
+    .nav-island {
+        width: auto;               /* ← ganti dari min(92vw, 420px) */
+        max-width: min(90vw, 320px); /* ← batasi lebar max */
+        gap: 6px;
+        padding: 5px 8px;
+        flex-wrap: nowrap;         /* ← jangan wrap */
+    }
+
+    .island-btn {
+        width: 34px;               /* ← dari 40px */
+        height: 34px;
+        font-size: 13px;           /* ← dari 16px */
+    }
+
+    .island-status {
+        min-width: 48px;           /* ← dari 80px */
+        padding: 5px 8px;
+        font-size: 10px;           /* ← dari 11px */
+    }
+
+    .nav-island .zoom-controls span {
+        min-width: 32px;           /* ← dari 45px */
+        padding: 4px 6px;
+        font-size: 9px;
+    }
+
+    .nav-island .zoom-controls {
+        gap: 4px;                  /* ← dari 8px */
+    }
         }
     </style>
 </head>
