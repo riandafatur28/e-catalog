@@ -6,7 +6,7 @@
     "year": "2026",
     "medium": "Cat Minyak di Kanvas",
     "type": "Lukisan",
-    "file": "assets/pdf/karya-01.pdf",
+    "file": "assets/pdf/karya-01.jpeg",
     "featured": true
   },
   {
@@ -15,8 +15,8 @@
     "artist": "Siti Aminah",
     "year": "2025",
     "medium": "Akrilik pada Kanvas",
-    "type": "pdf",
-    "file": "assets/pdf/karya-02.pdf",
+    "type": "lukisan",
+    "file": "assets/pdf/karya-02.jpg",
     "featured": false
   },
   {
@@ -25,8 +25,8 @@
     "artist": "Budi Santoso",
     "year": "2026",
     "medium": "Digital Art & Ilustrasi",
-    "type": "pdf",
-    "file": "assets/pdf/karya-03.pdf",
+    "type": "lukisan",
+    "file": "assets/pdf/karya-03.jpg",
     "featured": false
   },
   {

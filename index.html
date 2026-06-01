@@ -805,13 +805,16 @@
         }
 
         items.forEach((k, i) => {
-            const card = createCard(k);
+            const fileType = normalizeFileType(k.file, k.type);
+            const card = createCard(k, fileType);
             card.style.animationDelay = (i > 0 ? i * 45 : 0) + 'ms';
             grid.appendChild(card);
-            // Add thumbnail task for any item with a PDF file
-            if (k.file) {
-                const imgEl = card.querySelector('img');
-                thumbTasks.push({ img: imgEl, file: k.file, id: k.id });
+            const imgEl = card.querySelector('img');
+            if (k.file && previewTypes.includes(fileType)) {
+                thumbTasks.push({ img: imgEl, file: k.file, type: fileType, id: k.id });
+            } else if (imgEl) {
+                const cardThumb = imgEl.closest('.card-thumb');
+                cardThumb?.classList.remove('shimmer');
             }
         });
 
@@ -819,7 +822,7 @@
             thumbTasks.forEach((task, idx) => {
                 setTimeout(() => {
                     if (task.img && task.img.parentElement) {
-                        renderPdfThumb(task.img, task.file);
+                        renderFileThumb(task.img, task.file, task.type);
                     }
                 }, idx * 100);
             });
@@ -834,10 +837,107 @@
         updatePagination(total, totalPages);
     }
 
+    const previewTypes = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp'];
+    const fileIconMap = {
+        pdf: '📄',
+        ppt: '📊',
+        pptx: '📊',
+        doc: '📝',
+        docx: '📝',
+        xls: '📊',
+        xlsx: '📊',
+        jpg: '🖼️',
+        jpeg: '🖼️',
+        png: '🖼️',
+        gif: '🖼️',
+        webp: '🖼️',
+        mp4: '🎞️',
+        webm: '🎞️',
+        ogg: '🎞️',
+        mp3: '🎧',
+        wav: '🎧',
+        aac: '🎧',
+        flac: '🎧',
+        txt: '📄',
+        rtf: '📄'
+    };
+    const fileLabelMap = {
+        pdf: 'PDF',
+        ppt: 'PPT',
+        pptx: 'PPT',
+        doc: 'DOC',
+        docx: 'DOC',
+        xls: 'XLS',
+        xlsx: 'XLS',
+        jpg: 'JPEG',
+        jpeg: 'JPEG',
+        png: 'PNG',
+        gif: 'GIF',
+        webp: 'WEBP',
+        mp4: 'VIDEO',
+        webm: 'VIDEO',
+        ogg: 'VIDEO',
+        mp3: 'AUDIO',
+        wav: 'AUDIO',
+        aac: 'AUDIO',
+        flac: 'AUDIO',
+        txt: 'TEXT',
+        rtf: 'TEXT'
+    };
+
+    function getFileExtension(file) {
+        const match = String(file || '').toLowerCase().match(/\.([a-z0-9]+)(?:[\?#].*)?$/);
+        return match ? match[1] : '';
+    }
+
+    function normalizeFileType(file, declaredType) {
+        const ext = getFileExtension(file);
+        if (ext) return ext;
+        if (!declaredType) return 'file';
+        const normalized = String(declaredType).toLowerCase();
+        if (normalized.includes('ppt')) return 'pptx';
+        if (normalized.includes('word') || normalized.includes('doc')) return 'docx';
+        if (normalized.includes('excel') || normalized.includes('xls')) return 'xlsx';
+        if (normalized.includes('pdf')) return 'pdf';
+        if (normalized.includes('image')) return 'png';
+        if (normalized.includes('video')) return 'mp4';
+        if (normalized.includes('audio') || normalized.includes('music')) return 'mp3';
+        return 'file';
+    }
+
+    async function renderImageThumb(imgEl, url) {
+        if (!imgEl || !imgEl.parentElement) return;
+        const cardThumb = imgEl.closest('.card-thumb');
+        imgEl.loading = 'eager';
+        imgEl.decoding = 'async';
+        imgEl.onload = () => {
+            imgEl.classList.add('loaded');
+            if (cardThumb) {
+                cardThumb.classList.add('has-thumb');
+                cardThumb.classList.remove('shimmer');
+            }
+        };
+        imgEl.onerror = () => {
+            console.warn('Image thumbnail failed:', url);
+            if (cardThumb) cardThumb.classList.remove('shimmer');
+        };
+        imgEl.src = url;
+    }
+
+    async function renderFileThumb(imgEl, url, type) {
+        if (type === 'pdf') {
+            return renderPdfThumb(imgEl, url);
+        }
+        if (previewTypes.includes(type)) {
+            return renderImageThumb(imgEl, url);
+        }
+    }
+
     /* ── Create Card ── */
-    function createCard(k) {
-        const type = (k.type || 'pdf').toLowerCase();
-        const icon = (type === 'ppt' || type === 'pptx') ? '📊' : '📄';
+    function createCard(k, fileType) {
+        const type = fileType || normalizeFileType(k.file, k.type);
+        const icon = fileIconMap[type] || '📁';
+        const badge = fileLabelMap[type] || type.toUpperCase();
 
         const a = document.createElement('a');
         a.href      = `detail.html?id=${k.id}`;
@@ -848,7 +948,7 @@
             <div class="card-thumb shimmer">
                 <div class="card-thumb-icon">${icon}</div>
                 <img alt="Sampul ${escHtml(k.title)}" loading="eager" decoding="async">
-                <span class="card-badge">${escHtml(type)}</span>
+                <span class="card-badge">${escHtml(badge)}</span>
             </div>`;
         a.innerHTML += `
             <div class="card-info">
@@ -872,13 +972,14 @@
                         const pdf = await pdfjsLib.getDocument(url).promise;
                         const page = await pdf.getPage(1);
                         const vp = page.getViewport({ scale: 1 });
-                        
-                        // Use fixed dimensions instead of measuring DOM (which might be 0)
-                        const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
-                        const tw = 280 * dpr;
-                        const th = 360 * dpr;
+                        const cardBounds = imgEl.closest('.card-thumb')?.getBoundingClientRect();
+                        const baseWidth = Math.max(280, Math.round(cardBounds?.width || 280));
+                        const baseHeight = Math.max(360, Math.round(cardBounds?.height || 360));
+                        const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1.5), 3);
+                        const tw = baseWidth * dpr;
+                        const th = baseHeight * dpr;
                         const scale = Math.max(tw / vp.width, th / vp.height);
-                        const rvp = page.getViewport({ scale });
+                        const rvp = page.getViewport({ scale: scale * 1.08 });
                         
                         // Render to working canvas
                         const rc = document.createElement('canvas');
@@ -902,7 +1003,12 @@
                         const offsetY = (th - rc.height) / 2;
                         cx.drawImage(rc, offsetX, offsetY);
                         
-                        const dataUrl = cc.toDataURL('image/jpeg', 0.9);
+                        let dataUrl;
+                        try {
+                            dataUrl = cc.toDataURL('image/webp', 0.92);
+                        } catch {
+                            dataUrl = cc.toDataURL('image/jpeg', 0.92);
+                        }
                         console.log('Rendered PDF thumbnail:', url, 'size:', tw, 'x', th);
                         return dataUrl;
                     } catch (e) {
