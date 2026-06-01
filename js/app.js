@@ -45,6 +45,9 @@ async function initFlipbook() {
         document.title = `Ngawiti 2 | karya | ${karya.title}`;
         document.getElementById('download-btn').href = karya.file;
 
+        // Generate barcode panel
+        generateBarcode(karya);
+
         if (!karya.file.endsWith('.pdf')) {
             setLoaderText('⚠️ Format bukan PDF');
             setTimeout(() => {
@@ -103,6 +106,27 @@ async function loadAndRenderPDF(pdfUrl) {
     } catch (error) {
         console.error('PDF error:', error);
         showError(`Gagal memuat PDF: ${error.message}`);
+    }
+}
+
+function generateBarcode(karya) {
+    try {
+        const barcodeValue = String(karya.id);
+        const barcodeSvg = document.getElementById('barcode-svg');
+        
+        JsBarcode('#barcode-svg', barcodeValue, {
+            format: 'CODE128',
+            width: 1.5,
+            height: 50,
+            margin: 4,
+            lineColor: '#000000',
+            displayValue: false
+        });
+
+        document.getElementById('barcode-title').textContent = karya.title;
+        document.getElementById('barcode-artist').textContent = `${karya.artist}`;
+    } catch (error) {
+        console.error('Barcode generation error:', error);
     }
 }
 
@@ -170,10 +194,10 @@ function initTurnFlipbook() {
     const nextBtn = document.getElementById('btn-next');
     const zoomInBtn = document.getElementById('btn-zoom-in');
     const zoomOutBtn = document.getElementById('btn-zoom-out');
-    const zoomResetBtn = document.getElementById('zoom-indicator');
+    const zoomResetBtn = document.getElementById('btn-zoom-reset');
 
-    if (prevBtn) prevBtn.onclick = () => { if (!zoomActive() && !isFlipping && $flipbook) $flipbook.turn('previous'); };
-    if (nextBtn) nextBtn.onclick = () => { if (!zoomActive() && !isFlipping && $flipbook) $flipbook.turn('next'); };
+    if (prevBtn) prevBtn.onclick = () => { if (!isFlipping && $flipbook) $flipbook.turn('previous'); };
+    if (nextBtn) nextBtn.onclick = () => { if (!isFlipping && $flipbook) $flipbook.turn('next'); };
     if (zoomInBtn) zoomInBtn.onclick = () => changeZoom(ZOOM_STEP);
     if (zoomOutBtn) zoomOutBtn.onclick = () => changeZoom(-ZOOM_STEP);
     if (zoomResetBtn) zoomResetBtn.onclick = resetZoom;
@@ -184,7 +208,7 @@ function initTurnFlipbook() {
     }
 
     document.addEventListener('keydown', (e) => {
-        if (zoomActive() || isFlipping || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (isFlipping || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); $flipbook.turn('previous'); }
         if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); $flipbook.turn('next'); }
         if (e.key === 'Home') { e.preventDefault(); $flipbook.turn(1); }
@@ -297,11 +321,6 @@ function initTurnFlipbook() {
             e.stopImmediatePropagation();
             return;
         }
-        if (zoomActive()) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            return;
-        }
 
         const diffX = touchStartX - e.changedTouches[0].screenX;
         const diffY = touchStartY - e.changedTouches[0].screenY;
@@ -355,9 +374,8 @@ function updateNavButtons(page) {
     const cur = page || ($flipbook ? $flipbook.turn('page') : 1);
     const prev = document.getElementById('btn-prev');
     const next = document.getElementById('btn-next');
-    const disabledByZoom = zoomActive();
-    if (prev) prev.disabled = disabledByZoom || cur <= 1;
-    if (next) next.disabled = disabledByZoom || cur >= totalPages;
+    if (prev) prev.disabled = cur <= 1;
+    if (next) next.disabled = cur >= totalPages;
 }
 
 function zoomActive() {
