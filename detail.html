@@ -253,15 +253,21 @@
 
         /* Bottom controls */
         .bottom-controls {
-            position: absolute;
-            bottom: 20px;
+            position: fixed;
+            bottom: 0;
             left: 0;
             width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
             z-index: 100;
-            padding: 0 16px;
+            padding: 12px 16px 24px 16px;
+            background: linear-gradient(to bottom, transparent 0%, rgba(44,26,14,0.4) 100%);
+            pointer-events: none;
+        }
+
+        .bottom-controls > * {
+            pointer-events: auto;
         }
 
         /* =====================
@@ -403,7 +409,7 @@
             .btn-back { font-size: 12px; padding: 7px 13px; }
 
             .bottom-controls {
-                padding: 0 10px;
+                padding: 10px 16px 20px 16px;
             }
 
             /* Island: ukuran otomatis, tidak paksa lebar penuh */
