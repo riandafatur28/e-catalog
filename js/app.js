@@ -22,6 +22,36 @@ const ZOOM_MAX = 2.2;
 const ZOOM_STEP = 0.2;
 const ZOOM_RESET = 1;
 
+// ─── Island visibility control ────────────────────────────────────────────────
+
+function showNavIsland() {
+    if (!navIsland) navIsland = document.querySelector('.nav-island');
+    if (!navIsland) return;
+    
+    navIsland.classList.add('visible');
+    clearTimeout(hideIslandTimeout);
+    
+    // Auto-hide setelah 3 detik tanpa interaksi (kecuali hover/touch aktif)
+    hideIslandTimeout = setTimeout(() => {
+        if (!navIsland.matches(':hover')) {
+            navIsland.classList.remove('visible');
+        }
+    }, 3000);
+}
+
+function keepIslandVisible() {
+    if (!navIsland) return;
+    clearTimeout(hideIslandTimeout);
+    navIsland.classList.add('visible');
+}
+
+function scheduleHideIsland() {
+    if (!navIsland) return;
+    hideIslandTimeout = setTimeout(() => {
+        navIsland.classList.remove('visible');
+    }, 3000);
+}
+
 function getFileExtension(file) {
     const match = String(file || '').toLowerCase().match(/\.([a-z0-9]+)(?:[\?#].*)?$/);
     return match ? match[1] : '';
@@ -304,9 +334,18 @@ function setupGestureAndIsland(flipbookEl, allowPaging = false) {
     flipbookEl.style.touchAction = 'auto';
 
     navIsland = document.querySelector('.nav-island');
+    
+    // ✓ Island langsung tampil saat page load
     if (navIsland) {
-        // default hidden; will show on interaction
-        navIsland.classList.remove('visible');
+        navIsland.classList.add('visible');
+        
+        // Mouse: hover events untuk desktop — jangan remove 'visible' di init
+        navIsland.addEventListener('mouseenter', keepIslandVisible, { passive: true });
+        navIsland.addEventListener('mouseleave', scheduleHideIsland, { passive: true });
+        
+        // Touch: untuk mobile
+        navIsland.addEventListener('touchstart', keepIslandVisible, { passive: true });
+        navIsland.addEventListener('touchend', scheduleHideIsland, { passive: true });
     }
 
     const prevBtn = document.getElementById('btn-prev');
@@ -321,33 +360,20 @@ function setupGestureAndIsland(flipbookEl, allowPaging = false) {
     if (zoomOutBtn) zoomOutBtn.onclick = () => changeZoom(-ZOOM_STEP);
     if (zoomResetBtn) zoomResetBtn.onclick = resetZoom;
 
-    const showNavIsland = () => {
-        if (!navIsland) return;
-        navIsland.classList.add('visible');
-        clearTimeout(hideIslandTimeout);
-        hideIslandTimeout = setTimeout(() => {
-            navIsland.classList.remove('visible');
-        }, 1200);
-    };
-
-    const maybeShowIsland = (y) => {
-        if (y > window.innerHeight - 140) {
-            showNavIsland();
-        }
-    };
-
+    // ── Mouse: muncul saat bergerak ──────────────────────────────────────────
     window.addEventListener('mousemove', (e) => {
-        maybeShowIsland(e.clientY);
+        showNavIsland();
     }, { passive: true });
 
+    // ── Touch: muncul saat ada sentuhan ──────────────────────────────────────
     window.addEventListener('touchstart', (e) => {
         if (!e.touches.length) return;
-        maybeShowIsland(e.touches[0].clientY);
+        showNavIsland();
     }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
         if (!e.touches.length) return;
-        maybeShowIsland(e.touches[0].clientY);
+        showNavIsland();
     }, { passive: true });
 
     let touchStartX = 0;
