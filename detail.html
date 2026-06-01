@@ -57,10 +57,10 @@
         #flipbook {
             position: relative;
             margin: 0 auto;
-              transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
-              will-change: transform;
-                        min-height: 100vh;
-                        width: 100%;
+            transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+            will-change: transform;
+            min-height: 100vh;
+            width: 100%;
             gap: 0;
         }
 
@@ -264,6 +264,9 @@
             padding: 0 16px;
         }
 
+        /* =====================
+           NAV ISLAND — DESKTOP
+           ===================== */
         .nav-island {
             display: flex;
             align-items: center;
@@ -307,6 +310,7 @@
             line-height: 1;
             transition: background 0.2s, transform 0.2s, border-color 0.2s;
             box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+            flex-shrink: 0;
         }
 
         .island-btn:hover:not(:disabled) {
@@ -327,6 +331,7 @@
             font-weight: 700;
             text-align: center;
             letter-spacing: 0.04em;
+            white-space: nowrap;
         }
 
         .nav-island .zoom-controls {
@@ -347,66 +352,7 @@
             border-radius: 999px;
             padding: 8px 12px;
             font-family: 'Inter', monospace;
-        }
-
-
-        .zoom-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        #zoom-indicator {
-            min-width: 58px;
-            text-align: center;
-            color: #F5EDD8;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            background: rgba(44,26,14,0.85);
-            border: 1.5px solid #C9AA6E;
-            border-radius: 999px;
-            padding: 8px 10px;
-            backdrop-filter: blur(4px);
-            font-family: 'Inter', monospace;
-        }
-
-        .ctrl-btn {
-            background: rgba(44,26,14,0.88);
-            border: 1.5px solid #C9AA6E;
-            color: #F5EDD8;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
-            backdrop-filter: blur(4px);
-        }
-
-        .ctrl-btn:hover:not(:disabled) {
-            background: #8B1A1A;
-            border-color: #8B1A1A;
-            color: #F5EDD8;
-        }
-
-        #page-indicator {
-            background: rgba(44,26,14,0.85);
-            border: 1.5px solid #C9AA6E;
-            color: #F5EDD8;
-            padding: 8px 16px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            min-width: 80px;
-            text-align: center;
-            backdrop-filter: blur(4px);
-            font-family: 'Inter', monospace;
+            white-space: nowrap;
         }
 
         /* Download button */
@@ -447,37 +393,82 @@
             z-index: 200;
         }
 
-       /* Mobile — proporsional */
-@media (max-width: 768px) {
-    .nav-island {
-        width: auto;               /* ← ganti dari min(92vw, 420px) */
-        max-width: min(90vw, 320px); /* ← batasi lebar max */
-        gap: 6px;
-        padding: 5px 8px;
-        flex-wrap: nowrap;         /* ← jangan wrap */
-    }
+        /* =====================
+           NAV ISLAND — MOBILE
+           ===================== */
+        @media (max-width: 768px) {
+            .turn-page { box-shadow: none !important; }
+            #flipbook { transform: scale(0.95); }
+            #book-title { font-size: 13px; }
+            .btn-back { font-size: 12px; padding: 7px 13px; }
 
-    .island-btn {
-        width: 34px;               /* ← dari 40px */
-        height: 34px;
-        font-size: 13px;           /* ← dari 16px */
-    }
+            .bottom-controls {
+                padding: 0 10px;
+            }
 
-    .island-status {
-        min-width: 48px;           /* ← dari 80px */
-        padding: 5px 8px;
-        font-size: 10px;           /* ← dari 11px */
-    }
+            /* Island: ukuran otomatis, tidak paksa lebar penuh */
+            .nav-island {
+                width: auto;
+                max-width: min(90vw, 320px);
+                gap: 5px;
+                padding: 5px 8px;
+                flex-wrap: nowrap;
+                justify-content: center;
+            }
 
-    .nav-island .zoom-controls span {
-        min-width: 32px;           /* ← dari 45px */
-        padding: 4px 6px;
-        font-size: 9px;
-    }
+            /* Tombol navigasi lebih kecil */
+            .island-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+            }
 
-    .nav-island .zoom-controls {
-        gap: 4px;                  /* ← dari 8px */
-    }
+            /* Indikator halaman lebih ramping */
+            .island-status {
+                min-width: 46px;
+                padding: 5px 7px;
+                font-size: 10px;
+                letter-spacing: 0.02em;
+            }
+
+            /* Zoom controls lebih kompak */
+            .nav-island .zoom-controls {
+                gap: 4px;
+            }
+
+            .nav-island .zoom-controls span {
+                min-width: 30px;
+                padding: 4px 6px;
+                font-size: 9px;
+                letter-spacing: 0.02em;
+            }
+        }
+
+        /* Layar sangat kecil (< 360px) */
+        @media (max-width: 360px) {
+            .nav-island {
+                max-width: 96vw;
+                gap: 4px;
+                padding: 4px 6px;
+            }
+
+            .island-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 11px;
+            }
+
+            .island-status {
+                min-width: 40px;
+                padding: 4px 6px;
+                font-size: 9px;
+            }
+
+            .nav-island .zoom-controls span {
+                min-width: 26px;
+                padding: 4px 5px;
+                font-size: 9px;
+            }
         }
     </style>
 </head>
@@ -514,19 +505,19 @@
 </div>
 
 <!-- Bottom Navigation Controls -->
-    <div class="bottom-controls">
-        <div class="nav-island">
-            <button id="btn-prev" class="island-btn" disabled aria-label="Halaman sebelumnya">&#10094;</button>
-            <span id="page-indicator" class="island-status">1 / -</span>
-            <div class="zoom-controls">
-                <button id="btn-zoom-out" class="island-btn" aria-label="Perkecil">-</button>
-                <span id="zoom-indicator">100%</span>
-                <button id="btn-zoom-reset" class="island-btn" aria-label="Reset Zoom">⟳</button>
-                <button id="btn-zoom-in" class="island-btn" aria-label="Perbesar">+</button>
-            </div>
-            <button id="btn-next" class="island-btn" aria-label="Halaman berikutnya">&#10095;</button>
+<div class="bottom-controls">
+    <div class="nav-island">
+        <button id="btn-prev" class="island-btn" disabled aria-label="Halaman sebelumnya">&#10094;</button>
+        <span id="page-indicator" class="island-status">1 / -</span>
+        <div class="zoom-controls">
+            <button id="btn-zoom-out" class="island-btn" aria-label="Perkecil">-</button>
+            <span id="zoom-indicator">100%</span>
+            <button id="btn-zoom-reset" class="island-btn" aria-label="Reset Zoom">&#8635;</button>
+            <button id="btn-zoom-in" class="island-btn" aria-label="Perbesar">+</button>
         </div>
+        <button id="btn-next" class="island-btn" aria-label="Halaman berikutnya">&#10095;</button>
     </div>
+</div>
 
 <!-- Download Button -->
 <a id="download-btn" href="#" download>
