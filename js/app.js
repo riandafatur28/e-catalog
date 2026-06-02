@@ -232,9 +232,16 @@ async function initFlipbook() {
         const karya = data.find(k => String(k.id) === String(id));
         if (!karya) throw new Error('Karya tidak ditemukan');
 
-        document.getElementById('book-title').textContent = karya.title;
-        document.getElementById('book-artist').textContent =
-            `${karya.artist} • ${karya.medium || 'N/A'} • ${karya.year}`;
+       // Update header info - hanya tampilkan data yang ada
+        document.getElementById('book-title').textContent = karya.title || 'Tanpa Judul';
+
+        // Build artist text safely - hanya field yang ada di JSON Bapak
+        const artistParts = [];
+        if (karya.artist && karya.artist.trim()) artistParts.push(karya.artist);
+        if (karya.type && karya.type.trim()) artistParts.push(karya.type);  // JSON Bapak pakai 'type'
+
+        document.getElementById('book-artist').textContent = 
+            artistParts.length > 0 ? artistParts.join(' • ') : '';
         document.title = `Ngawiti 2 | karya | ${karya.title}`;
         document.getElementById('download-btn').href = karya.file;
 
@@ -726,12 +733,12 @@ function showError(message) {
     const loaderText = document.getElementById('loader-text');
     if (!loaderText) return;
     loaderText.innerHTML = `
-        <span style="color:#8B1A1A; font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:0.08em;">
+        <span style="color:#3D5A3D; font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:0.08em;">
             GAGAL MEMUAT
         </span><br>
         <span style="color:#C9AA6E; font-size:13px; display:block; margin-top:8px;">${message}</span>
         <button onclick="location.reload()"
-                style="margin-top:16px; padding:10px 24px; background:#8B1A1A; color:#F5EDD8;
+                style="margin-top:16px; padding:10px 24px; background:#3D5A3D; color:#F5EDD8;
                        border:none; border-radius:7px; font-size:13px; font-weight:700;
                        font-family:'Inter',sans-serif; letter-spacing:0.06em;
                        text-transform:uppercase; cursor:pointer;">
