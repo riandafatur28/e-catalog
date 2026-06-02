@@ -177,64 +177,64 @@
   },
   {
     "id": 23,
-    "title": "Sinta di Taman Sari",
-    "artist": "Titi Kamal",
-    "type": "Fotografi",
+    "title": "Ruang Ingatan",
+    "artist": "Nuha Alya Salsabila",
+    "type": "Instalasi",
     "file": "assets/pdf/karya-23.pdf",
     "featured": false
   },
   {
     "id": 24,
-    "title": "Rahwana dan Kereta Pusaka",
-    "artist": "Bayu Skak",
-    "type": "Ilustrasi",
+    "title": "Kenangan di Balik Daun Pisang",
+    "artist": "Gogor Yugo Utomo",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-24.pdf",
     "featured": false
   },
   {
     "id": 25,
-    "title": "Kumbakarna Sang Raksasa",
-    "artist": "Rina Nose",
+    "title": "Labirin Dunia Eskrim",
+    "artist": "RDahayu Raya Ath Thahirah",
     "type": "Lukisan",
     "file": "assets/pdf/karya-25.pdf",
     "featured": false
   },
   {
     "id": 26,
-    "title": "Dewata Nyangkur dan Gunung",
-    "artist": "Deddy Corbuzier",
-    "type": "Digital Art",
+    "title": "Entropy of Self",
+    "artist": "Ajeng Larasati",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-26.pdf",
     "featured": false
   },
   {
     "id": 27,
-    "title": "Prabu Siliwangi dan Harimau",
-    "artist": "Sarah Sechan",
+    "title": "Day and Night",
+    "artist": "Muhammad Riyanto",
     "type": "Lukisan",
     "file": "assets/pdf/karya-27.pdf",
     "featured": false
   },
   {
     "id": 28,
-    "title": "Ciung Wanara dan Sungai",
-    "artist": "Arie Kriting",
-    "type": "Fotografi",
+    "title": "Butterfly \"On The Dark Moon\" ",
+    "artist": "Bambang Hariyanto",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-28.pdf",
     "featured": false
   },
   {
     "id": 29,
-    "title": "Lutung Kasarung versi Modern",
-    "artist": "Gilang Dirga",
-    "type": "Ilustrasi",
+    "title": "The wrath of the universe",
+    "artist": "Johanes Daniel Fritzy",
+    "type": "Media kertas",
     "file": "assets/pdf/karya-29.pdf",
     "featured": false
   },
   {
     "id": 30,
-    "title": "Sasakala Gunung Tangkuban",
-    "artist": "Babe Cabiita",
+    "title": "Dibalik Rasa",
+    "artist": "Renda Maharani Putr",
     "type": "Lukisan",
     "file": "assets/pdf/karya-30.pdf",
     "featured": true
