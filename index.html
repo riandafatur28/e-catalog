@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ngawiti 2 | Beranda</title>
     <meta name="description" content="E-Katalog Pameran Seni Ngawiti 2 - Disporabudpar - 5-9 Juni 2026">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -10,11 +10,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" as="script">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ng-red': '#3D5A3D',
+                        'ng-green': '#5A7A5A', 
+                        'ng-cream': '#F5EDD8',
+                        'ng-brown': '#2C1A0E',
+                        'ng-gold': '#C9AA6E'
+                    },
+                    fontFamily: {
+                        'bebas': ['Bebas Neue', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background: #F5EDD8;
             color: #1a1a1a;
             min-height: 100vh;
@@ -788,8 +813,8 @@
         const start = (currentPage - 1) * ITEMS_PER_PAGE;
         const items = filteredKarya.slice(start, start + ITEMS_PER_PAGE);
 
-        totalEl.textContent = total;
-        shownEl.textContent = items.length;
+        totalEl.textContent = allKarya.length;
+        shownEl.textContent = total;
 
         grid.innerHTML = '';
         const loadingEl = document.getElementById('loading-state');
@@ -936,26 +961,25 @@
     /* ── Create Card ── */
     function createCard(k, fileType) {
         const type = fileType || normalizeFileType(k.file, k.type);
-    const icon = fileIconMap[type] || '📁';
-    const badge = fileLabelMap[type] || (type ? type.toUpperCase() : '');
+        const icon = fileIconMap[type] || '📁';
+        const badge = fileLabelMap[type] || (type ? type.toUpperCase() : '');
 
-    const a = document.createElement('a');
-    a.href = `detail.html?id=${k.id}`;
-    a.className = 'karya-card';
-    a.setAttribute('aria-label', `Lihat karya: ${k.title} oleh ${k.artist}`);
+        const a = document.createElement('a');
+        a.href      = `detail.html?id=${k.id}`;
+        a.className = 'karya-card';
+        a.setAttribute('aria-label', `Lihat karya: ${k.title} oleh ${k.artist}`);
 
-    a.innerHTML = `
-        <div class="card-thumb shimmer">
-            <div class="card-thumb-icon">${icon}</div>
-            <img alt="Sampul ${escHtml(k.title)}" loading="eager" decoding="async">
-            ${badge ? `<span class="card-badge">${escHtml(badge)}</span>` : ''}
-        </div>
-        <div class="card-info">
-            <div class="card-title" title="${escHtml(k.title)}">${escHtml(k.title)}</div>
-            ${k.artist ? `<div class="card-artist">${escHtml(k.artist)}</div>` : ''}
-        </div>`;
-    
-    return a;
+        a.innerHTML = `
+            <div class="card-thumb shimmer">
+                <div class="card-thumb-icon">${icon}</div>
+                <img alt="Sampul ${escHtml(k.title)}" loading="eager" decoding="async">
+                ${badge ? `<span class="card-badge">${escHtml(badge)}</span>` : ''}
+            </div>
+            <div class="card-info">
+                <div class="card-title" title="${escHtml(k.title)}">${escHtml(k.title)}</div>
+                ${k.artist ? `<div class="card-artist">${escHtml(k.artist)}</div>` : ''}
+            </div>`;
+        return a;
     }
 
     /* ── PDF Thumbnail ── */
@@ -981,7 +1005,6 @@
                         const scale = Math.max(tw / vp.width, th / vp.height);
                         const rvp = page.getViewport({ scale: scale * 1.08 });
                         
-                        // Render to working canvas
                         const rc = document.createElement('canvas');
                         rc.width = Math.ceil(rvp.width);
                         rc.height = Math.ceil(rvp.height);
@@ -989,7 +1012,6 @@
                         if (!rctx) throw new Error('Cannot get 2D context');
                         await page.render({ canvasContext: rctx, viewport: rvp }).promise;
                         
-                        // Create final canvas with white background
                         const cc = document.createElement('canvas');
                         cc.width = tw;
                         cc.height = th;
@@ -1009,7 +1031,6 @@
                         } catch {
                             dataUrl = cc.toDataURL('image/jpeg', 0.92);
                         }
-                        console.log('Rendered PDF thumbnail:', url, 'size:', tw, 'x', th);
                         return dataUrl;
                     } catch (e) {
                         console.error('PDF render error for', url, ':', e.message);
@@ -1036,7 +1057,6 @@
                     cardThumb.classList.add('has-thumb');
                     cardThumb.classList.remove('shimmer');
                 }
-                console.log('Thumbnail loaded successfully:', url);
             };
             imgEl.onerror = () => {
                 console.error('Image load failed for:', url);
@@ -1059,8 +1079,8 @@
         wrap.style.display = 'flex';
 
         info.textContent    = `Halaman ${currentPage} dari ${totalPages}`;
-        prevBtn.disabled    = currentPage <= 1;
-        nextBtn.disabled    = currentPage >= totalPages;
+        if (prevBtn) prevBtn.disabled = currentPage <= 1;
+        if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
 
         nums.innerHTML = '';
         const pages = buildPageRange(currentPage, totalPages);
@@ -1099,57 +1119,122 @@
     /* ── Filter & Search ── */
     function applyFilters() {
         let res = [...allKarya];
+        
+        // Apply type filter
         if (currentFilter !== 'all') {
-            res = res.filter(k => (k.type || 'pdf').toLowerCase() === currentFilter);
+            res = res.filter(k => {
+                const fileType = normalizeFileType(k.file, k.type);
+                return fileType === currentFilter;
+            });
         }
+        
+        // Apply search query - case-insensitive
         if (searchQuery) {
-            res = res.filter(k =>
-                k.title.toLowerCase().includes(searchQuery) ||
-                k.artist.toLowerCase().includes(searchQuery) ||
-                (k.medium || '').toLowerCase().includes(searchQuery) ||
-                k.year.includes(searchQuery)
-            );
+            const query = searchQuery.toLowerCase();
+            res = res.filter(k => {
+                const title = (k.title || '').toLowerCase();
+                const artist = (k.artist || '').toLowerCase();
+                const type = (k.type || '').toLowerCase();
+                const year = (k.year || '').toLowerCase();
+                
+                return title.includes(query) || 
+                       artist.includes(query) || 
+                       type.includes(query) || 
+                       year.includes(query);
+            });
         }
-        currentPage    = 1;
-        filteredKarya  = res;
+        
+        // Reset to first page when filters change
+        currentPage = 1;
+        filteredKarya = res;
+        
+        // Re-render grid
         renderGrid();
     }
 
     function resetFilters() {
-        searchQuery = ''; currentFilter = 'all'; currentPage = 1;
-        document.getElementById('search-input').value = '';
+        searchQuery = '';
+        currentFilter = 'all';
+        currentPage = 1;
+        
+        // Reset UI
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.value = '';
+        
         document.querySelectorAll('.filter-btn').forEach((b, i) => {
             b.classList.toggle('active', i === 0);
         });
+        
+        // Re-apply filters with empty query
         filteredKarya = [...allKarya];
         renderGrid();
-        document.getElementById('search-input').focus();
+        
+        // Focus search input for better UX
+        document.getElementById('search-input')?.focus();
     }
     window.resetFilters = resetFilters;
 
     /* ── Listeners ── */
     function setupListeners() {
-        document.getElementById('search-input').addEventListener('input', e => {
-            searchQuery = e.target.value.toLowerCase().trim();
-            applyFilters();
-        });
+        // Search input - FIX: pastikan event listener terpasang
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                currentPage = 1; // Reset ke halaman 1 saat search
+                applyFilters();
+            });
+            
+            // Support keyboard shortcut Ctrl+K untuk focus search
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    searchInput.focus();
+                }
+            });
+        }
 
+        // Filter buttons - FIX: pastikan active state update
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', e => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.addEventListener('click', (e) => {
+                // Remove active dari semua button
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                // Tambahkan active ke button yang diklik
                 e.currentTarget.classList.add('active');
+                
+                // Update filter dan apply
                 currentFilter = e.currentTarget.dataset.filter;
+                currentPage = 1; // Reset ke halaman 1 saat filter berubah
                 applyFilters();
             });
         });
 
-        document.getElementById('btn-prev').addEventListener('click', () => goPage(currentPage - 1));
-        document.getElementById('btn-next').addEventListener('click', () => goPage(currentPage + 1));
+        // Pagination buttons
+        document.getElementById('btn-prev')?.addEventListener('click', () => {
+            if (currentPage > 1) {
+                goPage(currentPage - 1);
+            }
+        });
+        
+        document.getElementById('btn-next')?.addEventListener('click', () => {
+            const totalPages = Math.max(1, Math.ceil(filteredKarya.length / ITEMS_PER_PAGE));
+            if (currentPage < totalPages) {
+                goPage(currentPage + 1);
+            }
+        });
 
-        document.addEventListener('keydown', e => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                document.getElementById('search-input').focus();
+        // Keyboard navigation for pagination
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return; // Jangan trigger jika sedang ketik di search
+            
+            const totalPages = Math.max(1, Math.ceil(filteredKarya.length / ITEMS_PER_PAGE));
+            if (e.key === 'ArrowLeft' && currentPage > 1) {
+                goPage(currentPage - 1);
+            }
+            if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                goPage(currentPage + 1);
             }
         });
     }
