@@ -473,8 +473,8 @@
   },
   {
     "id": 60,
-    "title": "Raja Ampat dan Laut Biru",
-    "artist": "Parto",
+    "title": "Menuju yang Belum Diketahui",
+    "artist": "Aulia Raya",
     "type": "Lukisan",
     "file": "assets/pdf/karya-60.pdf",
     "featured": true
@@ -705,90 +705,42 @@
   },
   {
     "id": 89,
-    "title": "Solo dan Karawitan",
-    "artist": "Babe",
+    "title": "Menunggu yang Tak Kembali",
+    "artist": "Aulia Raya",
     "type": "Fotografi",
     "file": "assets/pdf/karya-89.pdf",
     "featured": false
   },
   {
     "id": 90,
-    "title": "Yogyakarta dan Keraton",
-    "artist": "Sule",
-    "type": "Ilustrasi",
+    "title": "Festival Budaya Nusantara",
+    "artist": "Almira Ghasani",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-90.pdf",
     "featured": false
   },
   {
     "id": 91,
-    "title": "Jakarta dan Monas di Malam Hari",
-    "artist": "Andre",
+    "title": "Keanekaragaman Biota Laut",
+    "artist": "Almira Ghasani",
     "type": "Lukisan",
     "file": "assets/pdf/karya-91.pdf",
     "featured": true
   },
   {
     "id": 92,
-    "title": "Jawa dan Batik Parang",
-    "artist": "Babe",
-    "type": "Digital Art",
+    "title": "Petualangan Laut Pelangi",
+    "artist": "Niken Wulandari",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-92.pdf",
     "featured": false
   },
   {
     "id": 93,
-    "title": "Sunda dan Angklung Emas",
-    "artist": "Sule",
-    "type": "Ilustrasi",
+    "title": "Festival Budaya Nusantara",
+    "artist": "Niken Wulandari",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-93.pdf",
     "featured": false
-  },
-  {
-    "id": 94,
-    "title": "Betawi dan Ondel-ondel",
-    "artist": "Andre",
-    "type": "Lukisan",
-    "file": "assets/pdf/karya-94.pdf",
-    "featured": false
-  },
-  {
-    "id": 95,
-    "title": "Bugis dan Pinisi Lautan",
-    "artist": "Nunung",
-    "type": "Fotografi",
-    "file": "assets/pdf/karya-95.pdf",
-    "featured": false
-  },
-  {
-    "id": 96,
-    "title": "Makassar dan Fort Rotterdam",
-    "artist": "Azis",
-    "type": "Digital Art",
-    "file": "assets/pdf/karya-96.pdf",
-    "featured": false
-  },
-  {
-    "id": 97,
-    "title": "Banjar dan Pasar Terapung",
-    "artist": "Parto",
-    "type": "Lukisan",
-    "file": "assets/pdf/karya-97.pdf",
-    "featured": false
-  },
-  {
-    "id": 98,
-    "title": "",
-    "artist": "",
-    "type": "",
-    "file": "assets/pdf/karya-98.pdf",
-    "featured": false
-  },
-  {
-    "id": 99,
-    "title": "",
-    "artist": "",
-    "type": "",
-    "file": "assets/pdf/karya-99.pdf",
-    "featured": false
-  }  
+  }
 ]
