@@ -1254,8 +1254,8 @@
                 <div class="partner-logo-box">
                     <img src="partners/beska.png">
                 </div>
-                <div class="partner-name">Beska Desain Rumah Nganjuk</div>
-                <div class="partner-tooltip">Beska Desain Rumah Nganjuk</div>
+                <div class="partner-name">Beksa Desain Rumah Nganjuk</div>
+                <div class="partner-tooltip">Beksa Desain Rumah Nganjuk</div>
             </a>
             <a class="partner-item" href="https://www.instagram.com/tif.nganjuk/" aria-label="PSDKU Politeknik Negeri Jember Kabupaten Nganjuk">
                 <div class="partner-logo-box">
@@ -1507,7 +1507,7 @@
         const items = filteredKarya.slice(start, start + ITEMS_PER_PAGE);
 
         totalEl.textContent = allKarya.length;
-        shownEl.textContent = total;
+        shownEl.textContent = items.length;
 
         grid.innerHTML = '';
         document.getElementById('loading-state')?.remove();
