@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Preload critical resources -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" as="script">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -45,7 +44,7 @@
             min-height: 100vh;
         }
 
-        /* Accent stripe - HIJAU */
+        /* ── Accent stripe ── */
         .accent-stripe {
             height: 5px;
             background: repeating-linear-gradient(
@@ -56,7 +55,7 @@
             );
         }
 
-        /* Header - HIJAU */
+        /* ── Header ── */
         .header-bar {
             background: #F5EDD8;
             border-bottom: 3px solid #3D5A3D;
@@ -135,7 +134,218 @@
             letter-spacing: 0.04em;
         }
 
-        /* Search section - Dynamic Island - HIJAU */
+        /* ══════════════════════════════════
+           BANNER SLIDER SECTION
+        ══════════════════════════════════ */
+        .banner-section {
+            position: relative;
+            overflow: hidden;
+            background: #1a2a1a;
+            border-bottom: 3px solid #3D5A3D;
+        }
+
+        /* Track */
+        .banner-track-wrap {
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .banner-track-wrap:active { cursor: grabbing; }
+
+        .banner-track {
+            display: flex;
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        /* Slide */
+        .banner-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 420px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            text-decoration: none;
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) { .banner-slide { height: 240px; } }
+        @media (min-width: 601px) and (max-width: 900px) { .banner-slide { height: 320px; } }
+
+        /* Background image layer */
+        .banner-slide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transform: scale(1.04);
+            transition: transform 6s ease;
+        }
+
+        .banner-slide.active .banner-slide-bg {
+            transform: scale(1);
+        }
+
+        /* Overlay gradient */
+        .banner-slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(10,20,10,0.85) 0%,
+                rgba(10,20,10,0.4)  40%,
+                rgba(10,20,10,0.1)  70%,
+                transparent         100%
+            );
+        }
+
+        /* Caption */
+        .banner-caption {
+            position: relative;
+            z-index: 2;
+            padding: 28px 32px;
+            width: 100%;
+        }
+
+        .banner-caption-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #C9AA6E;
+            margin-bottom: 6px;
+        }
+
+        .banner-caption-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(28px, 5vw, 52px);
+            line-height: 1;
+            color: #F5EDD8;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .banner-caption-sub {
+            font-size: 13px;
+            color: rgba(245,237,216,0.75);
+            max-width: 480px;
+        }
+
+        .banner-caption-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #F5EDD8;
+            background: rgba(61,90,61,0.8);
+            border: 1px solid rgba(201,170,110,0.5);
+            padding: 7px 16px;
+            border-radius: 999px;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .banner-caption-link:hover {
+            background: #3D5A3D;
+            border-color: #C9AA6E;
+        }
+
+        /* Nav arrows */
+        .banner-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            display: flex;
+            gap: 0;
+        }
+
+        .banner-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(201,170,110,0.5);
+            background: rgba(10,20,10,0.55);
+            color: #F5EDD8;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .banner-nav-btn:hover {
+            background: #3D5A3D;
+            border-color: #C9AA6E;
+        }
+
+        .banner-nav-prev { left: 16px; position: absolute; }
+        .banner-nav-next { right: 16px; position: absolute; }
+
+        /* Dots */
+        .banner-dots {
+            position: absolute;
+            bottom: 14px;
+            right: 20px;
+            z-index: 5;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .banner-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(245,237,216,0.45);
+            cursor: pointer;
+            transition: all 0.28s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .banner-dot.active {
+            background: #C9AA6E;
+            width: 20px;
+            border-radius: 3px;
+        }
+
+        /* Placeholder slide (before data loads) */
+        .banner-placeholder {
+            background: linear-gradient(135deg, #2C3D2C 0%, #1a2a1a 100%);
+        }
+
+        .banner-placeholder-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .banner-placeholder-icon {
+            font-size: 52px;
+            opacity: 0.4;
+        }
+
+        .banner-placeholder-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            letter-spacing: 0.1em;
+            color: rgba(245,237,216,0.3);
+        }
+
+        /* ── Search section ── */
         .search-section {
             background: transparent;
             border-bottom: none;
@@ -145,10 +355,7 @@
             align-items: center;
         }
 
-        .search-inner {
-            max-width: 100%;
-            margin: 0 auto;
-        }
+        .search-inner { max-width: 100%; margin: 0 auto; }
 
         .search-row {
             display: flex;
@@ -165,8 +372,7 @@
             transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .search-row:hover,
-        .search-row:focus-within {
+        .search-row:hover, .search-row:focus-within {
             background: rgba(61, 90, 61, 0.12);
             border-color: #3D5A3D;
             box-shadow: 0 12px 32px rgba(61,90,61,0.18);
@@ -221,14 +427,13 @@
             white-space: nowrap;
         }
 
-        .filter-btn.active,
-        .filter-btn:hover {
+        .filter-btn.active, .filter-btn:hover {
             background: #3D5A3D;
             color: #F5EDD8;
             border-color: #3D5A3D;
         }
 
-        /* Results bar */
+        /* ── Results bar ── */
         .results-bar {
             max-width: 1280px;
             margin: 0 auto;
@@ -240,7 +445,7 @@
 
         .results-bar .highlight { color: #3D5A3D; font-weight: 700; }
 
-        /* Gallery */
+        /* ── Gallery ── */
         .gallery-main {
             max-width: 1280px;
             margin: 0 auto;
@@ -254,12 +459,10 @@
         }
 
         @media (min-width: 900px) {
-            .gallery-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-            }
+            .gallery-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         }
 
-        /* Card */
+        /* ── Card ── */
         .karya-card {
             background: #EDE0C0;
             border: 1.5px solid #C9AA6E;
@@ -412,9 +615,7 @@
         }
 
         /* States */
-        .loading-state,
-        .empty-state,
-        .error-state {
+        .loading-state, .empty-state, .error-state {
             grid-column: 1 / -1;
             display: flex;
             flex-direction: column;
@@ -466,7 +667,7 @@
 
         .btn-action:hover { background: #2F452F; }
 
-        /* ── Pagination ─ */
+        /* ── Pagination ── */
         .pagination-wrap {
             margin-top: 28px;
             margin-bottom: 8px;
@@ -542,10 +743,7 @@
             font-weight: 700;
         }
 
-        .page-btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-        }
+        .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
         #page-numbers {
             display: flex;
@@ -578,45 +776,275 @@
             font-size: 14px;
         }
 
-        /* Mobile: compact single-row pagination */
-        @media (max-width: 600px) {
-            .pagination-info {
-                font-size: 11px;
-            }
-
-            .pagination-btns {
-                max-width: min(90vw, 340px);
-                padding: 5px 8px;
-                gap: 4px;
-            }
-
-            #btn-prev, #btn-next {
-                width: 28px;
-                height: 28px;
-                font-size: 12px;
-            }
-
-            #page-numbers .page-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 11px;
-            }
-
-            #page-numbers {
-                gap: 3px;
-            }
-
-            .page-btn .page-icon { display: inline-block; }
-            .page-btn .page-label { display: none; }
+        /* ══════════════════════════════════
+           OFFICIAL PARTNER SECTION
+        ══════════════════════════════════ */
+        .partner-section {
+            background: #2C3D2C;
+            padding: 48px 24px 52px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Desktop: show label, hide icon */
-        @media (min-width: 601px) {
-            .page-btn .page-icon { display: none; }
-            .page-btn .page-label { display: inline; }
+        /* subtle texture */
+        .partner-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 30px,
+                rgba(255,255,255,0.015) 30px,
+                rgba(255,255,255,0.015) 31px
+            );
+            pointer-events: none;
         }
 
-        /* Footer - HIJAU */
+        .partner-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* "Presented by" block */
+        .presented-by-wrap {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .presented-by-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #C9AA6E;
+            margin-bottom: 10px;
+        }
+
+        .presented-by-logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .presented-by-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .presented-logo-box {
+            width: 320px;
+            height: 320px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(201,170,110,0.35);
+            background: rgba(201,170,110,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .presented-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .presented-by-item:hover .presented-logo-box {
+            border-color: #C9AA6E;
+            background: rgba(201,170,110,0.18);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+        }
+
+        .presented-by-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #F5EDD8;
+            letter-spacing: 0.06em;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.3;
+            transition: color 0.2s;
+        }
+
+        .presented-by-item:hover .presented-by-name { color: #C9AA6E; }
+
+        /* Tooltip */
+        .presented-by-item .partner-tooltip {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            background: #1a2a1a;
+            color: #F5EDD8;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(201,170,110,0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.22s ease;
+            z-index: 10;
+        }
+
+        .presented-by-item .partner-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #1a2a1a;
+        }
+
+        .presented-by-item:hover .partner-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Divider */
+        .partner-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .partner-divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(201,170,110,0.4), transparent);
+        }
+
+        .partner-divider-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #C9AA6E;
+            white-space: nowrap;
+        }
+
+        /* Partner grid */
+        .partner-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .partner-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            width: 110px;
+        }
+
+        .partner-logo-box {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            border: 1px solid rgba(201,170,110,0.25);
+            background: rgba(245,237,216,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partner-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .partner-item:hover .partner-logo-box {
+            border-color: rgba(201,170,110,0.7);
+            background: rgba(201,170,110,0.12);
+            transform: translateY(-5px) scale(1.04);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.35);
+        }
+
+        .partner-item:hover .partner-logo-box img {
+            filter: brightness(0) invert(1);
+            opacity: 1;
+        }
+
+        .partner-name {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(245,237,216,0.55);
+            letter-spacing: 0.05em;
+            text-align: center;
+            line-height: 1.35;
+            max-width: 100px;
+            transition: color 0.25s;
+        }
+
+        .partner-item:hover .partner-name { color: #C9AA6E; }
+
+        /* Hover tooltip for partner */
+        .partner-item .partner-tooltip {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            background: #1a2a1a;
+            color: #F5EDD8;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(201,170,110,0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.22s ease;
+            z-index: 10;
+        }
+
+        .partner-item .partner-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: #1a2a1a;
+        }
+
+        .partner-item:hover .partner-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── Footer ── */
         .footer-bar {
             background: #3D5A3D;
             color: #F5EDD8;
@@ -629,36 +1057,39 @@
 
         .footer-sub { font-size: 10px; opacity: 0.65; margin-top: 4px; }
 
-        /* Responsive tweaks */
+        /* ── Mobile ── */
         @media (max-width: 768px) {
-            .search-row {
-                width: min(84vw, 480px);
-                gap: 10px;
-                padding: 9px 14px;
-            }
-            .filter-btn {
-                font-size: 9px;
-                padding: 5px 11px;
-            }
-            .search-wrap {
-                min-width: 120px;
-            }
+            .search-row { width: min(84vw, 480px); gap: 10px; padding: 9px 14px; }
+            .filter-btn { font-size: 9px; padding: 5px 11px; }
+            .search-wrap { min-width: 120px; }
+            .hl-card { flex: 0 0 160px; }
         }
 
         @media (max-width: 600px) {
             .header-title { font-size: 36px; }
-            .header-meta  { display: none; }
+            .header-meta { display: none; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .gallery-main { padding: 14px 14px 50px; }
-            .search-row {
-                width: min(88vw, 360px);
-                gap: 6px;
-                padding: 8px 11px;
-            }
-            .filter-btn {
-                padding: 4px 8px;
-                font-size: 8px;
-            }
+            .search-row { width: min(88vw, 360px); gap: 6px; padding: 8px 11px; }
+            .filter-btn { padding: 4px 8px; font-size: 8px; }
+            .hl-card { flex: 0 0 140px; }
+            .presented-logo-box { width: 64px; height: 64px; font-size: 26px; }
+            .partner-item { width: 90px; }
+            .partner-logo-box { width: 56px; height: 56px; }
+
+            /* Pagination mobile */
+            .pagination-info { font-size: 11px; }
+            .pagination-btns { max-width: min(90vw, 340px); padding: 5px 8px; gap: 4px; }
+            #btn-prev, #btn-next { width: 28px; height: 28px; font-size: 12px; }
+            #page-numbers .page-btn { width: 28px; height: 28px; font-size: 11px; }
+            #page-numbers { gap: 3px; }
+            .page-btn .page-icon { display: inline-block; }
+            .page-btn .page-label { display: none; }
+        }
+
+        @media (min-width: 601px) {
+            .page-btn .page-icon { display: none; }
+            .page-btn .page-label { display: inline; }
         }
     </style>
 </head>
@@ -684,6 +1115,23 @@
         </div>
     </div>
 </header>
+
+<!-- ══ BANNER SLIDER ══ -->
+<!-- <section class="banner-section" aria-label="Banner Pameran Ngawiti 2">
+    <div class="banner-track-wrap" id="banner-track-wrap">
+        <div class="banner-track" id="banner-track">
+            <div class="banner-slide banner-placeholder active">
+                <div class="banner-placeholder-content">
+                    <div class="banner-placeholder-icon">🎨</div>
+                    <div class="banner-placeholder-text">Memuat Banner...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="banner-nav-btn banner-nav-prev" id="banner-prev" aria-label="Banner sebelumnya">&#8592;</button>
+    <button class="banner-nav-btn banner-nav-next" id="banner-next" aria-label="Banner berikutnya">&#8594;</button>
+    <div class="banner-dots" id="banner-dots"></div>
+</section> -->
 
 <!-- SEARCH & FILTER -->
 <section class="search-section">
@@ -711,7 +1159,6 @@
 <!-- GALLERY -->
 <main class="gallery-main">
     <div id="gallery-grid" class="gallery-grid">
-        <!-- Loading state -->
         <div class="loading-state" id="loading-state">
             <div class="spinner"></div>
             <div class="state-title">Memuat Katalog Pameran</div>
@@ -719,7 +1166,6 @@
         </div>
     </div>
 
-    <!-- Empty state -->
     <div id="empty-state" style="display:none;" class="gallery-grid">
         <div class="empty-state">
             <div class="state-icon">🔍</div>
@@ -729,7 +1175,6 @@
         </div>
     </div>
 
-    <!-- Error state -->
     <div id="error-state" style="display:none;" class="gallery-grid">
         <div class="error-state">
             <div class="state-icon">⚠️</div>
@@ -739,7 +1184,6 @@
         </div>
     </div>
 
-    <!-- Pagination -->
     <div id="pagination-wrap" class="pagination-wrap" style="display:none;">
         <div class="pagination-info" id="page-info">Halaman 1 dari 1</div>
         <div class="pagination-btns">
@@ -756,6 +1200,75 @@
     </div>
 </main>
 
+<!-- ══ OFFICIAL PARTNER ══ -->
+<section class="partner-section" id="partner-section" aria-label="Official Partner Pameran Ngawiti 2">
+    <div class="partner-inner">
+
+        <!-- Presented by -->
+        <div class="presented-by-wrap">
+            <div class="presented-by-eyebrow">Presented by</div>
+            <div class="presented-by-logos">
+                <!-- Ganti emoji dengan <img src="partners/dispora.png"> untuk menampilkan logo -->
+                <a class="presented-by-item" href="https://www.instagram.com/dinasporabudpar_nganjuk/" aria-label="Disporabudpar Kabupaten Nganjuk">
+                    <div class="presented-logo-box">
+                        <!-- <img src="partners/disporabudpar.png" alt="Logo Disporabudpar"> -->
+                        <img src="partners/dispora.png">
+                    </div>
+                    <div class="presented-by-name">Dinas Kepemudaan, Olahraga, Kebudayaan, dan Pariwisata (Disporabudpar)<br>Kab. Nganjuk</div>
+                    <div class="partner-tooltip">Dinas Kepemudaan, Olahraga, Kebudayaan, &amp; dan Pariwisata (Disporabudpar)</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="partner-divider">
+            <div class="partner-divider-line"></div>
+            <div class="partner-divider-label">Official Partner</div>
+            <div class="partner-divider-line"></div>
+        </div>
+
+        <!-- Partner logos -->
+        <div class="partner-grid" id="partner-grid">
+            <a class="partner-item" href="https://www.instagram.com/nganjuk.creativehub/" aria-label="Nganjuk Creative Hub">
+                <div class="partner-logo-box">
+                    <img src="partners/creative.png">
+                </div>
+                <div class="partner-name">Nganjuk Creative Hub</div>
+                <div class="partner-tooltip">Nganjuk Creative Hub</div>
+            </a>
+            <a class="partner-item" href="https://www.instagram.com/jo.ngaco/" aria-label="Join Nganjuk Art Community">
+                <div class="partner-logo-box">
+                   <img src="partners/joNgaco.png">
+                </div>
+                <div class="partner-name">Join Nganjuk Art Community</div>
+                <div class="partner-tooltip">Join Nganjuk Art Community</div>
+            </a>
+           <a class="partner-item" href="https://www.instagram.com/aksiseninganjuk_/" aria-label="Komunitas Aksi Seni Nganjuk">
+                <div class="partner-logo-box">
+                    <img src="partners/aksen.png">
+                </div>
+                <div class="partner-name">Komunitas Aksi Seni Nganjuk</div>
+                <div class="partner-tooltip">Komunitas Aksi Seni Nganjuk</div>
+            </a>
+            <a class="partner-item" href="https://www.instagram.com/beska.co.id/" aria-label="Beksa Desain Bangun Rumah Nganjuk">
+                <div class="partner-logo-box">
+                    <img src="partners/beska.png">
+                </div>
+                <div class="partner-name">Beksa Desain Rumah Nganjuk</div>
+                <div class="partner-tooltip">Beksa Desain Rumah Nganjuk</div>
+            </a>
+            <a class="partner-item" href="https://www.instagram.com/tif.nganjuk/" aria-label="PSDKU Politeknik Negeri Jember Kabupaten Nganjuk">
+                <div class="partner-logo-box">
+                    <img src="partners/polije.webp">
+                </div>
+                <div class="partner-name">PSDKU POLIJE Nganjuk</div>
+                <div class="partner-tooltip">PSDKU Politeknik Negeri Jember Kabupaten Nganjuk</div>
+            </a>
+        </div>
+
+    </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="footer-bar">
     &copy; 2026 Dinas Porabudpar Kabupaten Nganjuk | PSDKU Politeknik Negeri Jember Kabupaten Nganjuk | Rianda Faturrahman
@@ -765,23 +1278,25 @@
 <div class="accent-stripe"></div>
 
 <script>
-    /* ── Config ── */
+    /* ══ Config ══ */
     const ITEMS_PER_PAGE = 8;
     pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    /* ── State ── */
+    /* ══ State ══ */
     let allKarya = [], filteredKarya = [], currentPage = 1;
     let searchQuery = '', currentFilter = 'all';
     const pdfCache = new Map();
 
-    /* ── Init ─ */
+    /* ══ Init ══ */
     document.addEventListener('DOMContentLoaded', () => {
+        renderBanners();
         loadData();
         setupListeners();
+        initSliderDrag();
     });
 
-    /* ── Load JSON ── */
+    /* ══ Load JSON ══ */
     async function loadData() {
         try {
             const res = await fetch('data.json');
@@ -795,13 +1310,191 @@
         }
     }
 
-    /* ── Render Grid ── */
+    /* ══════════════════════════════════
+       BANNER SLIDER WITH PDF SUPPORT
+    ══════════════════════════════════ */
+
+    // ✨ BANNER DATA - UPDATE INI UNTUK MENAMBAH BANNER PDF
+    const BANNERS = [
+        {
+            eyebrow  : 'Pameran Seni · 5–9 Juni 2026',
+            title    : 'Ngawiti 2',
+            sub      : 'Tilas ing Jagad — Balai Budaya PU Sindok, Kabupaten Nganjuk',
+            href     : '#gallery-grid',
+            linkLabel: 'Jelajahi Katalog',
+            bg       : 'banners/banner-1.pdf',    // ← PATH BANNER PDF
+            color    : '#C9AA6E',
+            gradFrom : '#1a3a1a',
+            gradTo   : '#2C3D2C',
+            isPdf    : true                        // ← TANDAI SEBAGAI PDF
+        },
+        {
+            eyebrow  : 'Open Gallery · 14:00 – 20:00',
+            title    : 'Kreasi · Ide · Aksi',
+            sub      : 'Disporabudpar × PSDKU Politeknik Negeri Jember Kabupaten Nganjuk',
+            href     : '#partner-section',
+            linkLabel: 'Lihat Partner',
+            bg       : 'banners/banner-2.pdf',
+            color    : '#fffff',
+            gradFrom : '#0F2020',
+            gradTo   : '#1a3028',
+            isPdf    : true
+        },
+        {
+            eyebrow  : 'E-Katalog Resmi',
+            title    : 'Ratusan Karya Seniman Muda',
+            sub      : 'Telusuri karya seni dalam format digital yang interaktif dan mudah diakses',
+            href     : '#gallery-grid',
+            linkLabel: 'Lihat Semua Karya',
+            bg       : 'banners/banner-3.pdf',
+            color    : '#D4B896',
+            gradFrom : '#2a1a0a',
+            gradTo   : '#3D2A10',
+            isPdf    : true
+        },
+    ];
+
+    let bannerIndex = 0;
+    let bannerTimer = null;
+
+    // ✨ RENDER BANNERS DENGAN SUPPORT PDF
+    function renderBanners() {
+        const track = document.getElementById('banner-track');
+        const dots  = document.getElementById('banner-dots');
+        if (!track) return;
+
+        track.innerHTML = '';
+        BANNERS.forEach((b, i) => {
+            const slide = document.createElement('a');
+            slide.className = 'banner-slide' + (i === 0 ? ' active' : '');
+            slide.href = b.href || '#';
+            
+            // Setup background style
+            let bgStyle = '';
+            if (b.bg) {
+                bgStyle = `background-image: url('${b.bg}'); background-size: cover; background-position: center;`;
+            } else {
+                bgStyle = `background: linear-gradient(135deg, ${b.gradFrom || '#1a3a1a'} 0%, ${b.gradTo || '#2C3D2C'} 100%);`;
+            }
+            
+            slide.innerHTML = `
+                <div class="banner-slide-bg" style="${bgStyle}"></div>
+                <div class="banner-slide-overlay"></div>
+                <div class="banner-caption">
+                    ${b.eyebrow ? `<div class="banner-caption-eyebrow" style="color:${b.color || '#C9AA6E'}">${escHtml(b.eyebrow)}</div>` : ''}
+                    <div class="banner-caption-title">${escHtml(b.title)}</div>
+                    ${b.sub ? `<div class="banner-caption-sub">${escHtml(b.sub)}</div>` : ''}
+                    ${b.linkLabel ? `<span class="banner-caption-link">${escHtml(b.linkLabel)} &rarr;</span>` : ''}
+                </div>`;
+            track.appendChild(slide);
+            
+            // Jika PDF, render ke canvas
+            if (b.isPdf && b.bg) {
+                renderPdfBanner(slide, b.bg);
+            }
+        });
+
+        // Render navigation dots
+        dots.innerHTML = '';
+        BANNERS.forEach((_, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'banner-dot' + (i === 0 ? ' active' : '');
+            btn.setAttribute('aria-label', `Banner ${i + 1}`);
+            btn.onclick = (e) => { e.preventDefault(); bannerGo(i); bannerResetTimer(); };
+            dots.appendChild(btn);
+        });
+
+        bannerStartTimer();
+    }
+
+    // ✨ RENDER PDF BANNER KE CANVAS
+    async function renderPdfBanner(slideEl, pdfUrl) {
+        try {
+            const bgEl = slideEl.querySelector('.banner-slide-bg');
+            if (!bgEl) return;
+
+            // Load PDF document
+            const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 2 });
+
+            // Create canvas untuk render PDF
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            const context = canvas.getContext('2d');
+            if (!context) throw new Error('Canvas context tidak tersedia');
+            
+            await page.render({ 
+                canvasContext: context, 
+                viewport: viewport 
+            }).promise;
+
+            // Convert ke data URL dan set sebagai background
+            const imgData = canvas.toDataURL('image/webp', 0.9);
+            bgEl.style.backgroundImage = `url('${imgData}')`;
+            bgEl.style.backgroundSize = 'cover';
+            bgEl.style.backgroundPosition = 'center';
+        } catch (e) {
+            console.warn('⚠️ PDF banner render gagal untuk:', pdfUrl, e.message);
+            // Fallback ke gradient default - sudah ada di inline style
+        }
+    }
+
+    function bannerGo(idx) {
+        const slides = document.querySelectorAll('.banner-slide');
+        if (!slides.length) return;
+        bannerIndex = ((idx % slides.length) + slides.length) % slides.length;
+        document.getElementById('banner-track').style.transform = `translateX(-${bannerIndex * 100}%)`;
+        slides.forEach((s, i) => s.classList.toggle('active', i === bannerIndex));
+        document.querySelectorAll('.banner-dot').forEach((d, i) => d.classList.toggle('active', i === bannerIndex));
+    }
+
+    function bannerStartTimer() {
+        clearInterval(bannerTimer);
+        bannerTimer = setInterval(() => bannerGo(bannerIndex + 1), 5000);
+    }
+
+    function bannerResetTimer() { bannerStartTimer(); }
+
+    function initSliderDrag() {
+        const wrap  = document.getElementById('banner-track-wrap');
+        const track = document.getElementById('banner-track');
+        if (!wrap || !track) return;
+        let startX = 0, isDragging = false, startIdx = 0;
+        const onStart = (x) => { startX = x; isDragging = true; startIdx = bannerIndex; track.style.transition = 'none'; };
+        const onMove  = (x) => {
+            if (!isDragging) return;
+            const dx = startX - x;
+            track.style.transform = `translateX(${-(startIdx * wrap.offsetWidth + dx)}px)`;
+        };
+        const onEnd = (x) => {
+            if (!isDragging) return;
+            isDragging = false; track.style.transition = '';
+            const dx = startX - x;
+            bannerGo(Math.abs(dx) > wrap.offsetWidth * 0.2 ? (dx > 0 ? startIdx + 1 : startIdx - 1) : startIdx);
+            bannerResetTimer();
+        };
+        wrap.addEventListener('mousedown',   e => onStart(e.clientX));
+        window.addEventListener('mousemove', e => { if (isDragging) { e.preventDefault(); onMove(e.clientX); } }, { passive: false });
+        window.addEventListener('mouseup',   e => onEnd(e.clientX));
+        wrap.addEventListener('touchstart',  e => onStart(e.touches[0].clientX), { passive: true });
+        wrap.addEventListener('touchmove',   e => onMove(e.touches[0].clientX),  { passive: true });
+        wrap.addEventListener('touchend',    e => onEnd(e.changedTouches[0].clientX));
+    }
+
+
+
+    /* ══════════════════════════════════
+       RENDER GRID (CATALOG)
+    ══════════════════════════════════ */
     function renderGrid() {
-        const grid      = document.getElementById('gallery-grid');
-        const emptyEl   = document.getElementById('empty-state');
-        const paginEl   = document.getElementById('pagination-wrap');
-        const shownEl   = document.getElementById('shown-count');
-        const totalEl   = document.getElementById('total-count');
+        const grid    = document.getElementById('gallery-grid');
+        const emptyEl = document.getElementById('empty-state');
+        const paginEl = document.getElementById('pagination-wrap');
+        const shownEl = document.getElementById('shown-count');
+        const totalEl = document.getElementById('total-count');
 
         grid.style.display    = '';
         emptyEl.style.display = 'none';
@@ -817,8 +1510,7 @@
         shownEl.textContent = total;
 
         grid.innerHTML = '';
-        const loadingEl = document.getElementById('loading-state');
-        loadingEl?.remove();
+        document.getElementById('loading-state')?.remove();
 
         const thumbTasks = [];
 
@@ -831,144 +1523,97 @@
 
         items.forEach((k, i) => {
             const fileType = normalizeFileType(k.file, k.type);
-            const card = createCard(k, fileType);
+            const card     = createCard(k, fileType);
             card.style.animationDelay = (i > 0 ? i * 45 : 0) + 'ms';
             grid.appendChild(card);
             const imgEl = card.querySelector('img');
             if (k.file && previewTypes.includes(fileType)) {
                 thumbTasks.push({ img: imgEl, file: k.file, type: fileType, id: k.id });
             } else if (imgEl) {
-                const cardThumb = imgEl.closest('.card-thumb');
-                cardThumb?.classList.remove('shimmer');
+                imgEl.closest('.card-thumb')?.classList.remove('shimmer');
             }
         });
 
-        const scheduleThumbs = () => {
-            thumbTasks.forEach((task, idx) => {
-                setTimeout(() => {
-                    if (task.img && task.img.parentElement) {
-                        renderFileThumb(task.img, task.file, task.type);
-                    }
-                }, idx * 100);
-            });
-        };
-
         if (thumbTasks.length > 0) {
             requestAnimationFrame(() => {
-                setTimeout(scheduleThumbs, 50);
+                setTimeout(() => {
+                    thumbTasks.forEach((task, idx) => {
+                        setTimeout(() => {
+                            if (task.img && task.img.parentElement) {
+                                renderFileThumb(task.img, task.file, task.type);
+                            }
+                        }, idx * 100);
+                    });
+                }, 50);
             });
         }
 
         updatePagination(total, totalPages);
     }
 
+    /* ── File type helpers ── */
     const previewTypes = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp'];
     const fileIconMap = {
-        pdf: '📄',
-        ppt: '📊',
-        pptx: '📊',
-        doc: '📝',
-        docx: '📝',
-        xls: '📊',
-        xlsx: '📊',
-        jpg: '🖼️',
-        jpeg: '🖼️',
-        png: '🖼️',
-        gif: '🖼️',
-        webp: '🖼️',
-        mp4: '🎞️',
-        webm: '🎞️',
-        ogg: '🎞️',
-        mp3: '🎧',
-        wav: '🎧',
-        aac: '🎧',
-        flac: '🎧',
-        txt: '📄',
-        rtf: '📄'
+        pdf:'📄', ppt:'📊', pptx:'📊', doc:'📝', docx:'📝',
+        xls:'📊', xlsx:'📊', jpg:'🖼️', jpeg:'🖼️', png:'🖼️',
+        gif:'🖼️', webp:'🖼️', mp4:'🎞️', webm:'🎞️', ogg:'🎞️',
+        mp3:'🎧', wav:'🎧', aac:'🎧', flac:'🎧', txt:'📄', rtf:'📄'
     };
     const fileLabelMap = {
-        pdf: 'PDF',
-        ppt: 'PPT',
-        pptx: 'PPT',
-        doc: 'DOC',
-        docx: 'DOC',
-        xls: 'XLS',
-        xlsx: 'XLS',
-        jpg: 'JPEG',
-        jpeg: 'JPEG',
-        png: 'PNG',
-        gif: 'GIF',
-        webp: 'WEBP',
-        mp4: 'VIDEO',
-        webm: 'VIDEO',
-        ogg: 'VIDEO',
-        mp3: 'AUDIO',
-        wav: 'AUDIO',
-        aac: 'AUDIO',
-        flac: 'AUDIO',
-        txt: 'TEXT',
-        rtf: 'TEXT'
+        pdf:'PDF', ppt:'PPT', pptx:'PPT', doc:'DOC', docx:'DOC',
+        xls:'XLS', xlsx:'XLS', jpg:'JPEG', jpeg:'JPEG', png:'PNG',
+        gif:'GIF', webp:'WEBP', mp4:'VIDEO', webm:'VIDEO', ogg:'VIDEO',
+        mp3:'AUDIO', wav:'AUDIO', aac:'AUDIO', flac:'AUDIO', txt:'TEXT', rtf:'TEXT'
     };
 
     function getFileExtension(file) {
-        const match = String(file || '').toLowerCase().match(/\.([a-z0-9]+)(?:[\?#].*)?$/);
-        return match ? match[1] : '';
+        const m = String(file || '').toLowerCase().match(/\.([a-z0-9]+)(?:[\?#].*)?$/);
+        return m ? m[1] : '';
     }
 
     function normalizeFileType(file, declaredType) {
         const ext = getFileExtension(file);
         if (ext) return ext;
         if (!declaredType) return 'file';
-        const normalized = String(declaredType).toLowerCase();
-        if (normalized.includes('ppt')) return 'pptx';
-        if (normalized.includes('word') || normalized.includes('doc')) return 'docx';
-        if (normalized.includes('excel') || normalized.includes('xls')) return 'xlsx';
-        if (normalized.includes('pdf')) return 'pdf';
-        if (normalized.includes('image')) return 'png';
-        if (normalized.includes('video')) return 'mp4';
-        if (normalized.includes('audio') || normalized.includes('music')) return 'mp3';
+        const n = String(declaredType).toLowerCase();
+        if (n.includes('ppt'))   return 'pptx';
+        if (n.includes('word') || n.includes('doc')) return 'docx';
+        if (n.includes('excel') || n.includes('xls')) return 'xlsx';
+        if (n.includes('pdf'))   return 'pdf';
+        if (n.includes('image')) return 'png';
+        if (n.includes('video')) return 'mp4';
+        if (n.includes('audio') || n.includes('music')) return 'mp3';
         return 'file';
     }
 
     async function renderImageThumb(imgEl, url) {
         if (!imgEl || !imgEl.parentElement) return;
-        const cardThumb = imgEl.closest('.card-thumb');
+        const cardThumb = imgEl.closest('.card-thumb, .hl-card-thumb');
         imgEl.loading = 'eager';
         imgEl.decoding = 'async';
         imgEl.onload = () => {
             imgEl.classList.add('loaded');
-            if (cardThumb) {
-                cardThumb.classList.add('has-thumb');
-                cardThumb.classList.remove('shimmer');
-            }
+            if (cardThumb) { cardThumb.classList.add('has-thumb'); cardThumb.classList.remove('shimmer'); }
         };
-        imgEl.onerror = () => {
-            console.warn('Image thumbnail failed:', url);
-            if (cardThumb) cardThumb.classList.remove('shimmer');
-        };
+        imgEl.onerror = () => { if (cardThumb) cardThumb.classList.remove('shimmer'); };
         imgEl.src = url;
     }
 
     async function renderFileThumb(imgEl, url, type) {
-        if (type === 'pdf') {
-            return renderPdfThumb(imgEl, url);
-        }
-        if (previewTypes.includes(type)) {
-            return renderImageThumb(imgEl, url);
-        }
+        if (type === 'pdf') return renderPdfThumb(imgEl, url);
+        if (previewTypes.includes(type)) return renderImageThumb(imgEl, url);
     }
 
-    /* ── Create Card ── */
+    /* ── Create catalog card ── */
     function createCard(k, fileType) {
-        const type = fileType || normalizeFileType(k.file, k.type);
-        const icon = fileIconMap[type] || '📁';
+        const type  = fileType || normalizeFileType(k.file, k.type);
+        const icon  = fileIconMap[type] || '📁';
         const badge = fileLabelMap[type] || (type ? type.toUpperCase() : '');
 
         const a = document.createElement('a');
         a.href      = `detail.html?id=${k.id}`;
         a.className = 'karya-card';
         a.setAttribute('aria-label', `Lihat karya: ${k.title} oleh ${k.artist}`);
-
         a.innerHTML = `
             <div class="card-thumb shimmer">
                 <div class="card-thumb-icon">${icon}</div>
@@ -985,86 +1630,50 @@
     /* ── PDF Thumbnail ── */
     async function renderPdfThumb(imgEl, url) {
         try {
-            if (!imgEl || !imgEl.parentElement) {
-                console.warn('imgEl invalid or detached from DOM');
-                return;
-            }
-            
+            if (!imgEl || !imgEl.parentElement) return;
             if (!pdfCache.has(url)) {
                 pdfCache.set(url, (async () => {
                     try {
-                        const pdf = await pdfjsLib.getDocument(url).promise;
+                        const pdf  = await pdfjsLib.getDocument(url).promise;
                         const page = await pdf.getPage(1);
-                        const vp = page.getViewport({ scale: 1 });
-                        const cardBounds = imgEl.closest('.card-thumb')?.getBoundingClientRect();
-                        const baseWidth = Math.max(280, Math.round(cardBounds?.width || 280));
-                        const baseHeight = Math.max(360, Math.round(cardBounds?.height || 360));
+                        const vp   = page.getViewport({ scale: 1 });
+                        const bounds = imgEl.closest('.card-thumb, .hl-card-thumb')?.getBoundingClientRect();
+                        const bw  = Math.max(280, Math.round(bounds?.width  || 280));
+                        const bh  = Math.max(360, Math.round(bounds?.height || 360));
                         const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1.5), 3);
-                        const tw = baseWidth * dpr;
-                        const th = baseHeight * dpr;
+                        const tw  = bw * dpr, th = bh * dpr;
                         const scale = Math.max(tw / vp.width, th / vp.height);
                         const rvp = page.getViewport({ scale: scale * 1.08 });
-                        
+
                         const rc = document.createElement('canvas');
-                        rc.width = Math.ceil(rvp.width);
-                        rc.height = Math.ceil(rvp.height);
+                        rc.width = Math.ceil(rvp.width); rc.height = Math.ceil(rvp.height);
                         const rctx = rc.getContext('2d', { alpha: true });
-                        if (!rctx) throw new Error('Cannot get 2D context');
+                        if (!rctx) throw new Error('no ctx');
                         await page.render({ canvasContext: rctx, viewport: rvp }).promise;
-                        
+
                         const cc = document.createElement('canvas');
-                        cc.width = tw;
-                        cc.height = th;
+                        cc.width = tw; cc.height = th;
                         const cx = cc.getContext('2d');
-                        if (!cx) throw new Error('Cannot get final 2D context');
-                        cx.fillStyle = '#ffffff';
-                        cx.fillRect(0, 0, tw, th);
-                        cx.imageSmoothingEnabled = true;
-                        cx.imageSmoothingQuality = 'high';
-                        const offsetX = (tw - rc.width) / 2;
-                        const offsetY = (th - rc.height) / 2;
-                        cx.drawImage(rc, offsetX, offsetY);
-                        
-                        let dataUrl;
-                        try {
-                            dataUrl = cc.toDataURL('image/webp', 0.92);
-                        } catch {
-                            dataUrl = cc.toDataURL('image/jpeg', 0.92);
-                        }
-                        return dataUrl;
-                    } catch (e) {
-                        console.error('PDF render error for', url, ':', e.message);
-                        return null;
-                    }
+                        if (!cx) throw new Error('no final ctx');
+                        cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, tw, th);
+                        cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
+                        cx.drawImage(rc, (tw - rc.width) / 2, (th - rc.height) / 2);
+
+                        try { return cc.toDataURL('image/webp', 0.92); }
+                        catch { return cc.toDataURL('image/jpeg', 0.92); }
+                    } catch (e) { console.error('PDF render:', url, e.message); return null; }
                 })());
             }
-            
+
             const src = await pdfCache.get(url);
-            if (!src) {
-                console.warn('No thumbnail source for:', url);
-                return;
-            }
-            
-            if (!imgEl.parentElement) {
-                console.warn('imgEl no longer in DOM:', url);
-                return;
-            }
-            
+            if (!src || !imgEl.parentElement) return;
             imgEl.onload = () => {
                 imgEl.classList.add('loaded');
-                const cardThumb = imgEl.closest('.card-thumb');
-                if (cardThumb) {
-                    cardThumb.classList.add('has-thumb');
-                    cardThumb.classList.remove('shimmer');
-                }
-            };
-            imgEl.onerror = () => {
-                console.error('Image load failed for:', url);
+                const ct = imgEl.closest('.card-thumb, .hl-card-thumb');
+                if (ct) { ct.classList.add('has-thumb'); ct.classList.remove('shimmer'); }
             };
             imgEl.src = src;
-        } catch (e) {
-            console.error('renderPdfThumb error:', e.message);
-        }
+        } catch (e) { console.error('renderPdfThumb:', e.message); }
     }
 
     /* ── Pagination ── */
@@ -1077,8 +1686,7 @@
 
         if (total <= ITEMS_PER_PAGE) { wrap.style.display = 'none'; return; }
         wrap.style.display = 'flex';
-
-        info.textContent    = `Halaman ${currentPage} dari ${totalPages}`;
+        info.textContent   = `Halaman ${currentPage} dari ${totalPages}`;
         if (prevBtn) prevBtn.disabled = currentPage <= 1;
         if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
 
@@ -1119,132 +1727,86 @@
     /* ── Filter & Search ── */
     function applyFilters() {
         let res = [...allKarya];
-        
-        // Apply type filter
         if (currentFilter !== 'all') {
-            res = res.filter(k => {
-                const fileType = normalizeFileType(k.file, k.type);
-                return fileType === currentFilter;
-            });
+            res = res.filter(k => normalizeFileType(k.file, k.type) === currentFilter);
         }
-        
-        // Apply search query - case-insensitive
         if (searchQuery) {
-            const query = searchQuery.toLowerCase();
-            res = res.filter(k => {
-                const title = (k.title || '').toLowerCase();
-                const artist = (k.artist || '').toLowerCase();
-                const type = (k.type || '').toLowerCase();
-                const year = (k.year || '').toLowerCase();
-                
-                return title.includes(query) || 
-                       artist.includes(query) || 
-                       type.includes(query) || 
-                       year.includes(query);
-            });
+            const q = searchQuery.toLowerCase();
+            res = res.filter(k =>
+                (k.title  || '').toLowerCase().includes(q) ||
+                (k.artist || '').toLowerCase().includes(q) ||
+                (k.type   || '').toLowerCase().includes(q) ||
+                (k.year   || '').toLowerCase().includes(q)
+            );
         }
-        
-        // Reset to first page when filters change
-        currentPage = 1;
-        filteredKarya = res;
-        
-        // Re-render grid
+        currentPage    = 1;
+        filteredKarya  = res;
         renderGrid();
     }
 
     function resetFilters() {
-        searchQuery = '';
-        currentFilter = 'all';
-        currentPage = 1;
-        
-        // Reset UI
-        const searchInput = document.getElementById('search-input');
-        if (searchInput) searchInput.value = '';
-        
-        document.querySelectorAll('.filter-btn').forEach((b, i) => {
-            b.classList.toggle('active', i === 0);
-        });
-        
-        // Re-apply filters with empty query
+        searchQuery = ''; currentFilter = 'all'; currentPage = 1;
+        const si = document.getElementById('search-input');
+        if (si) si.value = '';
+        document.querySelectorAll('.filter-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
         filteredKarya = [...allKarya];
         renderGrid();
-        
-        // Focus search input for better UX
         document.getElementById('search-input')?.focus();
     }
     window.resetFilters = resetFilters;
 
     /* ── Listeners ── */
     function setupListeners() {
-        // Search input - FIX: pastikan event listener terpasang
-        const searchInput = document.getElementById('search-input');
-        if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
+        /* Search */
+        const si = document.getElementById('search-input');
+        if (si) {
+            si.addEventListener('input', e => {
                 searchQuery = e.target.value.toLowerCase().trim();
-                currentPage = 1; // Reset ke halaman 1 saat search
+                currentPage = 1;
                 applyFilters();
             });
-            
-            // Support keyboard shortcut Ctrl+K untuk focus search
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                    e.preventDefault();
-                    searchInput.focus();
-                }
+            document.addEventListener('keydown', e => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); si.focus(); }
             });
         }
 
-        // Filter buttons - FIX: pastikan active state update
+        /* Filter buttons */
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Remove active dari semua button
-                document.querySelectorAll('.filter-btn').forEach(b => {
-                    b.classList.remove('active');
-                });
-                // Tambahkan active ke button yang diklik
+            btn.addEventListener('click', e => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 e.currentTarget.classList.add('active');
-                
-                // Update filter dan apply
                 currentFilter = e.currentTarget.dataset.filter;
-                currentPage = 1; // Reset ke halaman 1 saat filter berubah
+                currentPage   = 1;
                 applyFilters();
             });
         });
 
-        // Pagination buttons
+        /* Pagination */
         document.getElementById('btn-prev')?.addEventListener('click', () => {
-            if (currentPage > 1) {
-                goPage(currentPage - 1);
-            }
+            if (currentPage > 1) goPage(currentPage - 1);
         });
-        
         document.getElementById('btn-next')?.addEventListener('click', () => {
-            const totalPages = Math.max(1, Math.ceil(filteredKarya.length / ITEMS_PER_PAGE));
-            if (currentPage < totalPages) {
-                goPage(currentPage + 1);
-            }
+            const tp = Math.max(1, Math.ceil(filteredKarya.length / ITEMS_PER_PAGE));
+            if (currentPage < tp) goPage(currentPage + 1);
+        });
+        document.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT') return;
+            const tp = Math.max(1, Math.ceil(filteredKarya.length / ITEMS_PER_PAGE));
+            if (e.key === 'ArrowLeft'  && currentPage > 1)  goPage(currentPage - 1);
+            if (e.key === 'ArrowRight' && currentPage < tp) goPage(currentPage + 1);
         });
 
-        // Keyboard navigation for pagination
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT') return; // Jangan trigger jika sedang ketik di search
-            
-            const totalPages = Math.max(1, Math.ceil(filteredKarya.length / ITEMS_PER_PAGE));
-            if (e.key === 'ArrowLeft' && currentPage > 1) {
-                goPage(currentPage - 1);
-            }
-            if (e.key === 'ArrowRight' && currentPage < totalPages) {
-                goPage(currentPage + 1);
-            }
-        });
+        /* Banner nav */
+        document.getElementById('banner-prev')?.addEventListener('click', () => { bannerGo(bannerIndex - 1); bannerResetTimer(); });
+        document.getElementById('banner-next')?.addEventListener('click', () => { bannerGo(bannerIndex + 1); bannerResetTimer(); });
     }
 
     /* ── Error State ── */
     function showError(msg) {
-        document.getElementById('gallery-grid').style.display = 'none';
-        document.getElementById('error-state').style.display  = '';
-        document.getElementById('error-msg').textContent       = msg;
-        document.getElementById('pagination-wrap').style.display = 'none';
+        document.getElementById('gallery-grid').style.display     = 'none';
+        document.getElementById('error-state').style.display      = '';
+        document.getElementById('error-msg').textContent          = msg;
+        document.getElementById('pagination-wrap').style.display  = 'none';
     }
 
     /* ── Utility ── */
