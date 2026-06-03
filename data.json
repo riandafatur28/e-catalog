@@ -234,7 +234,7 @@
   {
     "id": 30,
     "title": "Dibalik Rasa",
-    "artist": "Renda Maharani Putr",
+    "artist": "Renda Maharani Putri",
     "type": "Lukisan",
     "file": "assets/pdf/karya-30.pdf",
     "featured": true
@@ -305,7 +305,7 @@
   },
   {
     "id": 39,
-    "title": "JAMAN SING WISRUBAH (ZAMAN YANG SUDAH BERUBAH)",
+    "title": "JAMAN SING WIS RUBAH (ZAMAN YANG SUDAH BERUBAH)",
     "artist": "Anggra Cakra Buana",
     "type": "Lukisan",
     "file": "assets/pdf/karya-39.pdf",
@@ -401,73 +401,73 @@
   },
   {
     "id": 51,
-    "title": "Tohjaya dan Takhta Singasari",
-    "artist": "Andre",
-    "type": "Digital Art",
+    "title": "Resilience Flos",
+    "artist": "Syifa Syafira Nurhidayatika",
+    "type": "Media Campuran dan Ilustrasi Digital",
     "file": "assets/pdf/karya-51.pdf",
     "featured": false
   },
   {
     "id": 52,
-    "title": "Ranggawuni dan Kertanegara",
-    "artist": "Nunung",
+    "title": "Catatan Kecil Babad Sasak Kuno",
+    "artist": "Damaring Febryasmoro",
     "type": "Lukisan",
     "file": "assets/pdf/karya-52.pdf",
     "featured": false
   },
   {
     "id": 53,
-    "title": "Dyah Pitaloka dan Bubat",
-    "artist": "Azis",
-    "type": "Fotografi",
+    "title": "Buttercup",
+    "artist": "Syifa Syafira Nurhidayatika",
+    "type": "Media Campuran dan Ilustrasi Digital",
     "file": "assets/pdf/karya-53.pdf",
     "featured": false
   },
   {
     "id": 54,
-    "title": "Gajah Mada di Laut Jawa",
-    "artist": "Parto",
+    "title": "Al Qalam Ayat 1",
+    "artist": "Tara Nareswara Farikao",
     "type": "Ilustrasi",
     "file": "assets/pdf/karya-54.pdf",
     "featured": false
   },
   {
     "id": 55,
-    "title": "Nusantara dalam Genggaman",
-    "artist": "Babe",
-    "type": "Lukisan",
+    "title": "Bayu Anjukvara",
+    "artist": "Mutia Binti Mastifahe",
+    "type": "Batik",
     "file": "assets/pdf/karya-55.pdf",
     "featured": false
   },
   {
     "id": 56,
-    "title": "Candi Borobudur di Pagi Hari",
-    "artist": "Sule",
-    "type": "Fotografi",
+    "title": "sisa rumah di atas meja",
+    "artist": "Maulana Abdillah Safi",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-56.pdf",
     "featured": false
   },
   {
     "id": 57,
-    "title": "Prambanan dan Kisah Rama",
-    "artist": "Andre",
+    "title": "Punokawan",
+    "artist": "Sudianto",
     "type": "Digital Art",
     "file": "assets/pdf/karya-57.pdf",
     "featured": false
   },
   {
     "id": 58,
-    "title": "Dieng dan Kabut Pagi",
-    "artist": "Nunung",
-    "type": "Lukisan",
+    "title": "Kenangan dalam Retakan",
+    "artist": "Cyrille Delano Ogilvy",
+    "type": "Media Campuran",
     "file": "assets/pdf/karya-58.pdf",
     "featured": false
   },
   {
     "id": 59,
-    "title": "Bromo dan Matahari Terbit",
-    "artist": "Azis",
-    "type": "Fotografi",
+    "title": "Kaligrafy aksara jawa yang membentuk wayang semar",
+    "artist": "Gustaf Harhari",
+    "type": "mix media on canvas ",
     "file": "assets/pdf/karya-59.pdf",
     "featured": false
   },
@@ -481,170 +481,314 @@
   },
   {
     "id": 61,
-    "title": "Komodo dan Pulau Purba",
-    "artist": "Babe",
-    "type": "Fotografi",
+    "title": "SIBLINGS",
+    "artist": "Alghiffara Maulidansyah",
+    "type": "Grafis",
     "file": "assets/pdf/karya-61.pdf",
     "featured": false
   },
   {
     "id": 62,
-    "title": "Bunaken dan Terumbu Karang",
-    "artist": "Sule",
-    "type": "Digital Art",
+    "title": "Matius 13:10–17: Percaya dan Mengerti",
+    "artist": "Deborah Ram Mozes ",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-62.pdf",
     "featured": false
   },
   {
     "id": 63,
-    "title": "Wakatobi dan Surga Bawah Laut",
-    "artist": "Andre",
-    "type": "Lukisan",
+    "title": "Tubuh yang Bertumbuh dari Lilitan",
+    "artist": "PatricArtv",
+    "type": "Batik",
     "file": "assets/pdf/karya-63.pdf",
     "featured": false
   },
   {
     "id": 64,
-    "title": "Derawan dan Penyu Hijau",
-    "artist": "Nunung",
-    "type": "Fotografi",
+    "title": "Anna Bhumi Pesisir",
+    "artist": "Amerta Satria",
+    "type": "Kriya",
     "file": "assets/pdf/karya-64.pdf",
     "featured": false
   },
   {
     "id": 65,
-    "title": "Labuan Bajo dan Naga Purba",
-    "artist": "Azis",
-    "type": "Ilustrasi",
+    "title": "Tumbuh dan berkembang walau dihisap kumbang",
+    "artist": "A Lutfi Satako",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-65.pdf",
     "featured": false
   },
   {
     "id": 66,
-    "title": "Tana Toraja dan Rumah Adat",
-    "artist": "Parto",
-    "type": "Lukisan",
+    "title": "Kelahiran yang Tidak Diinginkan",
+    "artist": "A Lutfi Satako",
+    "type": "Mix media di kertaa",
     "file": "assets/pdf/karya-66.pdf",
     "featured": false
   },
   {
     "id": 67,
-    "title": "Danau Sentani dan Perahu Hias",
-    "artist": "Babe",
-    "type": "Fotografi",
+    "title": "Dabba tul art",
+    "artist": "QYM (Qiyam Krisna Aji)",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-67.pdf",
     "featured": false
   },
   {
     "id": 68,
-    "title": "Baliem Valley dan Suku Dani",
-    "artist": "Sule",
-    "type": "Digital Art",
+    "title": "Herbal Tutorial",
+    "artist": "Andi Sulistiono",
+    "type": "Kain",
     "file": "assets/pdf/karya-68.pdf",
     "featured": false
   },
   {
     "id": 69,
-    "title": "Asmat dan Ukiran Suci",
-    "artist": "Andre",
-    "type": "Lukisan",
+    "title": "Romantic Tone",
+    "artist": "Andi Sulistiono",
+    "type": "Kain",
     "file": "assets/pdf/karya-69.pdf",
     "featured": false
   },
   {
     "id": 70,
-    "title": "Dayak dan Mandau Perak",
-    "artist": "Nunung",
-    "type": "Ilustrasi",
+    "title": "Di Bawah Ingatan yang Rapuh",
+    "artist": "Ela Sofiatul Fu'adah",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-70.pdf",
     "featured": true
   },
   {
     "id": 71,
-    "title": "Batak dan Danau Toba",
-    "artist": "Azis",
-    "type": "Fotografi",
+    "title": "Dialog",
+    "artist": "Lidwina Riestanti",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-71.pdf",
     "featured": false
   },
   {
     "id": 72,
-    "title": "Minang dan Rumah Gadang",
-    "artist": "Parto",
+    "title": "Metamorfosa",
+    "artist": "Lidwina Riestanti",
     "type": "Lukisan",
     "file": "assets/pdf/karya-72.pdf",
     "featured": false
   },
   {
     "id": 73,
-    "title": "Jawa dan Batik Parang",
-    "artist": "Babe",
-    "type": "Digital Art",
+    "title": "Guriang",
+    "artist": "Achyar Riyadh",
+    "type": "Digital Illustration",
     "file": "assets/pdf/karya-73.pdf",
     "featured": false
   },
   {
     "id": 74,
-    "title": "Sunda dan Angklung Emas",
-    "artist": "Sule",
-    "type": "Ilustrasi",
+    "title": "Tumbuh berdarah darah",
+    "artist": "Dhani Tegar Ramadhan",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-74.pdf",
     "featured": false
   },
   {
     "id": 75,
-    "title": "Betawi dan Ondel-ondel",
-    "artist": "Andre",
+    "title": "Jaranan",
+    "artist": "Antoni Welly Kristioe",
     "type": "Lukisan",
     "file": "assets/pdf/karya-75.pdf",
     "featured": false
   },
   {
     "id": 76,
-    "title": "Bugis dan Pinisi Lautan",
-    "artist": "Nunung",
-    "type": "Fotografi",
+    "title": "Raden Saleh",
+    "artist": "Antoni Welly Kristioe",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-76.pdf",
     "featured": false
   },
   {
     "id": 77,
-    "title": "Makassar dan Fort Rotterdam",
-    "artist": "Azis",
-    "type": "Digital Art",
+    "title": "Saksi",
+    "artist": "Muhammad Luqman",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-77.pdf",
     "featured": false
   },
   {
     "id": 78,
-    "title": "Banjar dan Pasar Terapung",
-    "artist": "Parto",
+    "title": "Teman-teman Imajinasi",
+    "artist": "Sagara Biru Ash Shidqi",
     "type": "Lukisan",
     "file": "assets/pdf/karya-78.pdf",
     "featured": false
   },
   {
     "id": 79,
-    "title": "Palembang dan Jembatan Ampera",
-    "artist": "Babe",
-    "type": "Fotografi",
+    "title": "Ngabekti",
+    "artist": "Hiline Wijayanti",
+    "type": "Kriya",
     "file": "assets/pdf/karya-79.pdf",
     "featured": false
   },
   {
     "id": 80,
-    "title": "Yogyakarta dan Keraton",
-    "artist": "Sule",
-    "type": "Ilustrasi",
+    "title": "Sisa Wangi yang Tinggal di Ingatan",
+    "artist": "Firga Ananda",
+    "type": "Lukisan",
     "file": "assets/pdf/karya-80.pdf",
     "featured": false
   },
   {
     "id": 81,
-    "title": "Jakarta dan Monas di Malam Hari",
-    "artist": "Andre",
+    "title": "Joker",
+    "artist": "Maelan",
     "type": "Lukisan",
     "file": "assets/pdf/karya-81.pdf",
     "featured": true
-  }
+  },
+  {
+  "id": 82,
+    "title": "Camping",
+    "artist": "Maelan",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-82.pdf",
+    "featured": false
+  },
+  {
+    "id": 83,
+    "title": "The Majesty of character ( Arabic calligraphy)",
+    "artist": "Mohammad Hafidh Akbar",
+    "type": "Ilustrasi",
+    "file": "assets/pdf/karya-83.pdf",
+    "featured": false
+  },
+  {
+    "id": 84,
+    "title": "Perjuangan Kehidupan",
+    "artist": "Sjaifoel",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-84.pdf",
+    "featured": false
+  },
+  {
+    "id": 85,
+    "title": "Sisa Perjalanan",
+    "artist": "Achmad Rofiul",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-85.pdf",
+    "featured": false
+  },
+  {
+    "id": 86,
+    "title": "Eksplorasi batas Kenikmatan",
+    "artist": "Eko Wibowo",
+    "type": "Digital Painting",
+    "file": "assets/pdf/karya-86.pdf",
+    "featured": false
+  },
+  {
+    "id": 87,
+    "title": "Naga Raja kelapa Lancana (Antaboga)",
+    "artist": "Lucky Mardianto",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-87.pdf",
+    "featured": false
+  },
+  {
+    "id": 88,
+    "title": "Tempat Favoriteku: Hotel",
+    "artist": "Al Zhafran Anfieldeva Syafi’i",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-88.pdf",
+    "featured": false
+  },
+  {
+    "id": 89,
+    "title": "Solo dan Karawitan",
+    "artist": "Babe",
+    "type": "Fotografi",
+    "file": "assets/pdf/karya-89.pdf",
+    "featured": false
+  },
+  {
+    "id": 90,
+    "title": "Yogyakarta dan Keraton",
+    "artist": "Sule",
+    "type": "Ilustrasi",
+    "file": "assets/pdf/karya-90.pdf",
+    "featured": false
+  },
+  {
+    "id": 91,
+    "title": "Jakarta dan Monas di Malam Hari",
+    "artist": "Andre",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-91.pdf",
+    "featured": true
+  },
+  {
+    "id": 92,
+    "title": "Jawa dan Batik Parang",
+    "artist": "Babe",
+    "type": "Digital Art",
+    "file": "assets/pdf/karya-92.pdf",
+    "featured": false
+  },
+  {
+    "id": 93,
+    "title": "Sunda dan Angklung Emas",
+    "artist": "Sule",
+    "type": "Ilustrasi",
+    "file": "assets/pdf/karya-93.pdf",
+    "featured": false
+  },
+  {
+    "id": 94,
+    "title": "Betawi dan Ondel-ondel",
+    "artist": "Andre",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-94.pdf",
+    "featured": false
+  },
+  {
+    "id": 95,
+    "title": "Bugis dan Pinisi Lautan",
+    "artist": "Nunung",
+    "type": "Fotografi",
+    "file": "assets/pdf/karya-95.pdf",
+    "featured": false
+  },
+  {
+    "id": 96,
+    "title": "Makassar dan Fort Rotterdam",
+    "artist": "Azis",
+    "type": "Digital Art",
+    "file": "assets/pdf/karya-96.pdf",
+    "featured": false
+  },
+  {
+    "id": 97,
+    "title": "Banjar dan Pasar Terapung",
+    "artist": "Parto",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-97.pdf",
+    "featured": false
+  },
+  {
+    "id": 98,
+    "title": "",
+    "artist": "",
+    "type": "",
+    "file": "assets/pdf/karya-98.pdf",
+    "featured": false
+  },
+  {
+    "id": 99,
+    "title": "",
+    "artist": "",
+    "type": "",
+    "file": "assets/pdf/karya-99.pdf",
+    "featured": false
+  }  
 ]
