@@ -8,14 +8,6 @@
     "featured": false
   },
   {
-    "id": 2,
-    "title": "Dark Heaven",
-    "artist": "Nur Hidayat Aji Pamungkas",
-    "type": "Lukisan",
-    "file": "assets/pdf/karya-02.pdf",
-    "featured": false
-  },
-  {
     "id": 3,
     "title": "Metamorfosa Wajah Topeng",
     "artist": "Gatut Suwito",
@@ -117,14 +109,6 @@
     "artist": "Anita Lutfiyanti",
     "type": "Fotografi double exposure",
     "file": "assets/pdf/karya-15.pdf",
-    "featured": false
-  },
-  {
-    "id": 16,
-    "title": "Rwa Rupa Ring Setra",
-    "artist": "Ryan Hadi",
-    "type": "Grafis",
-    "file": "assets/pdf/karya-16.pdf",
     "featured": false
   },
   {
@@ -632,14 +616,6 @@
     "featured": false
   },
   {
-    "id": 80,
-    "title": "Sisa Wangi yang Tinggal di Ingatan",
-    "artist": "Firga Ananda",
-    "type": "Lukisan",
-    "file": "assets/pdf/karya-80.pdf",
-    "featured": false
-  },
-  {
     "id": 81,
     "title": "Joker",
     "artist": "Maelan",
@@ -741,6 +717,14 @@
     "artist": "Niken Wulandari",
     "type": "Lukisan",
     "file": "assets/pdf/karya-93.pdf",
+    "featured": false
+  },
+   {
+    "id": 94,
+    "title": "Valley Of Perseverance II",
+    "artist": "Septian Ardi Saputra",
+    "type": "Lukisan",
+    "file": "assets/pdf/karya-94.pdf",
     "featured": false
   }
 ]
